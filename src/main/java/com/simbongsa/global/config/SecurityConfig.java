@@ -18,6 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.simbongsa.global.jwt.filter.JwtAuthenticationFilter.whitelist;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -40,9 +41,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().requestMatchers(
-                "/", "/oauth2**",
-                "/resources/**", "/favicon.ico", //resource
-                "/swagger-ui/**", "/api-docs/**"); //swagger
+                whitelist); //swagger
     }
 
     @Bean

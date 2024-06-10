@@ -28,7 +28,7 @@ import java.util.Collections;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
 
-    private static final String[] whitelist = {
+    public static final String[] whitelist = {
             "/oauth**",
             "/resources/**", "/favicon.ico", // resource
             "/swagger-ui/**", "/api-docs/**", // swagger
