@@ -4,7 +4,9 @@ import com.simbongsa.global.apiPayload.code.BaseCode;
 import com.simbongsa.global.apiPayload.code.ResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 @Getter
 @AllArgsConstructor
@@ -44,8 +46,17 @@ public enum ErrorStatus implements BaseCode {
     // 예약 관련
     INVALID_RESERVATION_SIZE(HttpStatus.BAD_REQUEST, "RESERVATION4001", "예약 인원 수는 1 이상이어야 합니다."),
 
-    RESERVATION_FULL(HttpStatus.CONFLICT, "RESERVATION4091", "최대 인원이 충족되어 예약할 수 없습니다.");
+    RESERVATION_FULL(HttpStatus.CONFLICT, "RESERVATION4091", "최대 인원이 충족되어 예약할 수 없습니다."),
 
+    // S3 이미지 업로드
+    FAIL_IMAGE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "S500", "S3에 이미지 업로드를 실패했습니다."),
+    BAD_REQUEST_IMAGE(HttpStatus.BAD_REQUEST, "S400", "잘못된 이미지 데이터입니다."),
+    UNAUTHORIZED_S3(HttpStatus.UNAUTHORIZED, "S401", "S3 접근 인증에 실패했습니다."),
+    FORBIDDEN_S3(HttpStatus.FORBIDDEN, "S403", "S3 권한을 가지고 있지 않습니다."),
+    UNAVAILABLE_S3(HttpStatus.SERVICE_UNAVAILABLE, "S503", "S3 서버가 일시적으로 데이터를 처리할 수 없습니다."),
+
+    // 파일
+    FAIL_FILE_CONVERT(HttpStatus.BAD_REQUEST, "CONVERT1000", "파일 변환에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
