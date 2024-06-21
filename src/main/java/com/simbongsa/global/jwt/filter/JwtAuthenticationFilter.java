@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String[] whitelist = {
             "/oauth**",
             "/resources/**", "/favicon.ico", // resource
-            "/swagger-ui/**", "/api-docs/**", // swagger
+            "/swagger-ui/**", "/api-docs/**", "/v3/api-docs**", "/v3/api-docs/**" // swagger
     };
 
     @Override
