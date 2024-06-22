@@ -37,6 +37,12 @@ public class Member extends BaseEntity {
 
     private Role role;
 
+    private String oauthType;
+
+    private String introduction;
+
+    private Integer volunteerParticipationCnt;
+
     public Member(OauthMember request) {
         this.socialId = request.getSocialId();
         this.oauthProvider = request.getOauthProvider();

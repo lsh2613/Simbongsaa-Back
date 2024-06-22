@@ -29,7 +29,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String[] whitelist = {
             "/oauth**",
             "/resources/**", "/favicon.ico", // resource
-            "/swagger-ui/**", "/api-docs/**", "/v3/api-docs**", "/v3/api-docs/**" // swagger
+            "/swagger-ui/**", "/api-docs/**", "/v3/api-docs**", "/v3/api-docs/**" , // swagger
+            "/h2-console", "/h2-console/**", // h2
     };
 
     @Override
@@ -42,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = tokenProvider.extractToken(request, TokenType.ACCESS_TOKEN);
 
         if (token == null) {
-            log.error("accessToken이 존재하지 않음");
+            log.error(request.getRequestURL() + "에 대한 accessToken이 존재하지 않음");
             throw new GeneralHandler(ErrorStatus._BAD_REQUEST);
         }
 
