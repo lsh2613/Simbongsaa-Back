@@ -4,7 +4,6 @@ import com.simbongsa.common.entity.BaseEntity;
 import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.catalina.User;
 
 @Getter
 @Setter
@@ -20,10 +19,10 @@ public class Follows extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "following_member_id")
     private Member followingMemberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "followed_member_id")
     private Member followedMemberId;
 }

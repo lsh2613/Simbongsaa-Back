@@ -1,7 +1,6 @@
 package com.simbongsa.badge.entity;
 
 import com.simbongsa.badge.BadgeType;
-import com.simbongsa.common.constant.OauthProvider;
 import com.simbongsa.common.entity.BaseEntity;
 import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
@@ -21,7 +20,7 @@ public class Badge extends BaseEntity {
     private Long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Enumerated(EnumType.STRING)

@@ -1,9 +1,14 @@
 package com.simbongsa.feed.entity;
 
+import com.simbongsa.comment.entity.Comment;
 import com.simbongsa.common.entity.BaseEntity;
+import com.simbongsa.common.entity.Image;
 import com.simbongsa.group.entity.Group;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +24,7 @@ public class Feed extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @Column(nullable = false)

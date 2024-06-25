@@ -1,6 +1,5 @@
 package com.simbongsa.common.entity;
 
-import com.amazonaws.services.ec2.model.Volume;
 import com.simbongsa.badge.entity.Badge;
 import com.simbongsa.feed.entity.Feed;
 import com.simbongsa.group.entity.Group;
@@ -22,19 +21,19 @@ public class Image {
     private Long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "badge_id")
     private Badge badge;
 
-    @OneToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "feed_id")
     private Feed feed;
 
     // Posts

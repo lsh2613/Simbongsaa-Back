@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "`GROUP`")
+@Table(name = "\"GROUP\"")
 public class Group extends BaseEntity {
 
     @Id
@@ -30,7 +30,7 @@ public class Group extends BaseEntity {
     private Integer current_people;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "group_leader_id")
     private Member group_leader;
 
     private boolean exposed_status;
