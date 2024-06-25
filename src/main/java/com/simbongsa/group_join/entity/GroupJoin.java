@@ -16,7 +16,7 @@ public class GroupJoin extends Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "group_join_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

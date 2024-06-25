@@ -13,12 +13,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "GROUP_USER")
+@Table(name = "IMAGE")
 public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_user_id")
+    @Column(name = "image_id")
     private Long id;
 
     @OneToOne
