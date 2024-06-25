@@ -37,8 +37,6 @@ public class Member extends BaseEntity {
 
     private Role role;
 
-    private String oauthType;
-
     private String introduction;
 
     private Integer volunteerParticipationCnt;
