@@ -28,4 +28,9 @@ public class Feed extends BaseEntity {
     @Column(nullable = false)
     private String body;
 
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    private List<Image> image = new ArrayList<>();
+
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    private List<Comment> comment = new ArrayList<>();
 }
