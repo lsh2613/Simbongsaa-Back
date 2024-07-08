@@ -1,7 +1,7 @@
 package com.simbongsa.badge.entity;
 
 import com.simbongsa.badge.BadgeType;
-import com.simbongsa.common.entity.BaseEntity;
+import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;

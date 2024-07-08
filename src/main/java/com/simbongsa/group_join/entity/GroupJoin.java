@@ -1,5 +1,6 @@
 package com.simbongsa.group_join.entity;
 
+import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.group.entity.Group;
 import com.simbongsa.group_join.JoinType;
 import com.simbongsa.member.entity.Member;

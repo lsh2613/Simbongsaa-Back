@@ -1,8 +1,8 @@
 package com.simbongsa.feed.entity;
 
 import com.simbongsa.comment.entity.Comment;
-import com.simbongsa.common.entity.BaseEntity;
-import com.simbongsa.common.entity.Image;
+import com.simbongsa.global.common.entity.BaseEntity;
+import com.simbongsa.global.common.entity.Image;
 import com.simbongsa.group.entity.Group;
 import jakarta.persistence.*;
 import lombok.*;

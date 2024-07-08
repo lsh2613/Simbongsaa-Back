@@ -1,6 +1,7 @@
 package com.simbongsa.group.entity;
 
-import com.simbongsa.common.entity.BaseEntity;
+import com.simbongsa.global.common.constant.GroupStatus;
+import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;

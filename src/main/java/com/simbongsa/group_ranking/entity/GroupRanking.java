@@ -1,6 +1,6 @@
 package com.simbongsa.group_ranking.entity;
 
-import com.simbongsa.common.entity.BaseEntity;
+import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.group.entity.Group;
 import jakarta.persistence.*;
 import lombok.*;

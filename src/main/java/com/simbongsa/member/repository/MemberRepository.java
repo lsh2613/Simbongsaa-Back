@@ -1,6 +1,6 @@
 package com.simbongsa.member.repository;
 
-import com.simbongsa.common.constant.OauthProvider;
+import com.simbongsa.global.common.constant.OauthProvider;
 import com.simbongsa.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

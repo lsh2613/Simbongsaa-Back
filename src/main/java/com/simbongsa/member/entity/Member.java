@@ -1,9 +1,9 @@
 package com.simbongsa.member.entity;
 
-import com.simbongsa.common.entity.BaseEntity;
-import com.simbongsa.common.constant.OauthProvider;
-import com.simbongsa.common.constant.Role;
-import com.simbongsa.oauth2.member.OauthMember;
+import com.simbongsa.global.common.entity.BaseEntity;
+import com.simbongsa.global.common.constant.OauthProvider;
+import com.simbongsa.global.common.constant.Role;
+import com.simbongsa.global.oauth2.member.OauthMember;
 import jakarta.persistence.*;
 import lombok.*;
 
