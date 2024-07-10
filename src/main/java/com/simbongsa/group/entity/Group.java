@@ -1,18 +1,19 @@
 package com.simbongsa.group.entity;
 
-import com.simbongsa.common.entity.BaseEntity;
+import com.simbongsa.global.common.constant.GroupStatus;
+import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "\"GROUP\"")
+@Table(name = "GROUPS")
 public class Group extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
@@ -24,14 +25,16 @@ public class Group extends BaseEntity {
     private String introduction;
 
     @Column(nullable = false)
-    private Integer max_people;
+    private Integer maxPeople;
 
     @Column(nullable = false)
-    private Integer current_people;
+    private Integer currentPeople;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private GroupStatus groupStatus;
 
     @OneToOne
     @JoinColumn(name = "group_leader_id")
-    private Member group_leader;
-
-    private boolean exposed_status;
+    private Member groupLeader;
 }
