@@ -31,24 +31,6 @@ public enum ErrorStatus implements BaseCode {
     // 공지 관련
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "NOTICE4001", "존재하지 않는 공지 ID입니다."),
 
-    // 프로그램 관련
-    PROGRAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "PROGRAM4001", "존재하지 않는 프로그램 ID입니다."),
-
-    // 차량 관련
-    CAR_NOT_FOUND(HttpStatus.BAD_REQUEST, "CAR4001", "존재하지 않는 차량 ID입니다."),
-
-    // 수업 차량 관련
-    CLASS_CAR_NOT_FOUND(HttpStatus.BAD_REQUEST, "CLASSCAR4001", "존재하지 않는 수업 차량 ID입니다."),
-
-    // 참여 프로그램 관련
-    PARTICIPATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "PARTICIPATION4001", "존재하지 않는 프로그램 예약 ID입니다."),
-    UNAUTHORIZED_USER_ACCESS(HttpStatus.UNAUTHORIZED, "PARTICIPATION4002", "해당 예약정보에 접근 권한이 없는 사용자입니다."),
-
-    // 예약 관련
-    INVALID_RESERVATION_SIZE(HttpStatus.BAD_REQUEST, "RESERVATION4001", "예약 인원 수는 1 이상이어야 합니다."),
-
-    RESERVATION_FULL(HttpStatus.CONFLICT, "RESERVATION4091", "최대 인원이 충족되어 예약할 수 없습니다."),
-
     // S3 이미지 업로드
     FAIL_IMAGE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "S500", "S3에 이미지 업로드를 실패했습니다."),
     BAD_REQUEST_IMAGE(HttpStatus.BAD_REQUEST, "S400", "잘못된 이미지 데이터입니다."),
