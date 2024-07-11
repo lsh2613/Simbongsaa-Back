@@ -19,6 +19,10 @@ public enum ErrorStatus implements BaseCode {
     // 테스트용
     TEMP_EXCEPTION(HttpStatus.BAD_REQUEST, "TEMP4001", "Error 테스트"),
 
+    // 토큰
+    BLACKLISTED_TOKEN(HttpStatus.UNAUTHORIZED, "TOKEN4011", "블랙리스트에 존재하는 Access Token입니다"),
+    TOKEN_ID_MISMATCH(HttpStatus.FORBIDDEN, "TOKEN4003", "토큰의 사용자와 로그인된 사용자가 일치하지 않습니다."),
+
     // 회원 관련
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "존재하지 않는 사용자 ID입니다."),
     DUPLICATED_USERID(HttpStatus.UNAUTHORIZED, "USER4011", "이미 존재하는 사용자 ID입니다."),
