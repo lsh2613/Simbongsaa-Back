@@ -34,7 +34,7 @@ public class Group extends BaseEntity {
     @Column(nullable = false)
     private GroupStatus groupStatus;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_leader_id")
     private Member groupLeader;
 }
