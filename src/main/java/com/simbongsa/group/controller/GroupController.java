@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/group")
+@RequestMapping("/groups")
 public class GroupController {
 
     private final GroupService groupService;
@@ -91,4 +91,10 @@ public class GroupController {
         groupService.deleteGroup(memberId, groupId);
         return CustomApiResponse.onSuccess();
     }
+    
+    //TODO: 그룹 인원 리스트 불러오기
+
+    //TODO: 강퇴
+
+
 }
