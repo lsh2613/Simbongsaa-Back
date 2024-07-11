@@ -50,6 +50,7 @@ public class GroupServiceImpl implements GroupService{
         Member member = entityFacade.getMember(memberId);
         Group group = groupCreateReq.mapCreateReqToGroup(member);
         Group saveGroup = groupRepository.save(group);
+        //GroupUser에 방장 값을 넣어줘야 하는가?
 
         return saveGroup.getId();
     }
@@ -68,7 +69,7 @@ public class GroupServiceImpl implements GroupService{
             group.setIntroduction(groupUpdateReq.introduction());
         if (groupUpdateReq.maxPeople() != null) {
             if (group.getCurrentPeople() > groupUpdateReq.maxPeople())
-                throw new GeneralHandler(ErrorStatus._BAD_REQUEST);
+                throw new GeneralHandler(ErrorStatus.GROUP_FULL);
             group.setMaxPeople(groupUpdateReq.maxPeople());
         }
         if (groupUpdateReq.groupStatus() != null)
@@ -84,6 +85,6 @@ public class GroupServiceImpl implements GroupService{
 
     private void checkMemberRole(Long leaderId, Long memberId) {
         if (!leaderId.equals(memberId))
-            throw new GeneralHandler(ErrorStatus._UNAUTHORIZED);
+            throw new GeneralHandler(ErrorStatus.USER_FORBIDDEN);
     }
 }

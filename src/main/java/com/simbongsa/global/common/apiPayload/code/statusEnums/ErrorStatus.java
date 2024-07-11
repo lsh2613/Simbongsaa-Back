@@ -24,9 +24,16 @@ public enum ErrorStatus implements BaseCode {
     DUPLICATED_USERID(HttpStatus.UNAUTHORIZED, "USER4011", "이미 존재하는 사용자 ID입니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "USER4012", "사용자 비밀번호가 일치하지 않습니다"),
     SESSION_NOT_FOUND(HttpStatus.UNAUTHORIZED, "USER4013", "존재하지 않는 유효한 세션입니다."),
+    USER_FORBIDDEN(HttpStatus.FORBIDDEN, "USER403", "사용자에게 권한이 없습니다."),
+
 
     // 그룹 관련
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUP404", "그룹을 찾을 수 없습니다."),
+    GROUP_FULL(HttpStatus.BAD_REQUEST, "GROUP4001", "그룹 인원이 가득 찼습니다."),
+    
+    // 그룹 지원 관련
+    GROUP_JOIN_CONFLICT(HttpStatus.CONFLICT, "GROUP_JOIN409", "지원 신청이 이미 존재합니다."),
+    GROUP_JOIN_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUP_JOIN4042", "그룹 신청을 찾을 수 없습니다."),
 
     // 공지 관련
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "NOTICE4001", "존재하지 않는 공지 ID입니다."),

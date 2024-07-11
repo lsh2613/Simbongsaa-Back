@@ -4,11 +4,14 @@ import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
 import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.group.entity.Group;
 import com.simbongsa.group.repository.GroupRepository;
+import com.simbongsa.group_join.entity.GroupJoin;
+import com.simbongsa.group_join.repository.GroupJoinRepository;
 import com.simbongsa.member.entity.Member;
 import com.simbongsa.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +19,7 @@ import java.util.Optional;
 public class EntityFacade {
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
+    private final GroupJoinRepository groupJoinRepository;
     public Member getMember(Long memberId) {
         Optional<Member> memberById = memberRepository.findById(memberId);
         if (memberById.isEmpty())
@@ -28,5 +32,23 @@ public class EntityFacade {
         if (groupById.isEmpty())
             throw new GeneralHandler(ErrorStatus.GROUP_NOT_FOUND);
         return groupById.get();
+    }
+
+    public GroupJoin getGroupJoin(Long groupJoinId) {
+        Optional<GroupJoin> groupJoinById = groupJoinRepository.findById(groupJoinId);
+        if (groupJoinById.isEmpty())
+            throw new GeneralHandler(ErrorStatus.GROUP_JOIN_NOT_FOUND);
+        return groupJoinById.get();
+    }
+
+    public List<GroupJoin> getGroupJoinsByMemberId(Long memberId) {
+        return groupJoinRepository.findByMember_Id(memberId);
+    }
+
+    public List<GroupJoin> getGroupJoinsByGroupId(Long groupId) {
+        return groupJoinRepository.findByGroup_Id(groupId);
+    }
+    public Optional<GroupJoin> getGroupJoinByGroupIdAndMemberId(Long groupId, Long memberId) {
+        return groupJoinRepository.findByGroup_IdAndMember_Id(groupId, memberId);
     }
 }

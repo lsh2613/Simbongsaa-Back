@@ -2,7 +2,7 @@ package com.simbongsa.group_join.entity;
 
 import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.group.entity.Group;
-import com.simbongsa.group_join.JoinType;
+import com.simbongsa.global.common.constant.JoinType;
 import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +20,7 @@ public class GroupJoin extends BaseEntity {
     @Column(name = "group_join_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
 
