@@ -5,6 +5,7 @@ import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
 import com.simbongsa.global.common.constant.TokenType;
 import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.global.jwt.service.TokenProvider;
+import com.simbongsa.global.redis.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
+    private final RedisUtil redisUtil;
 
     public static final String[] whitelist = {
             "/oauth**",
@@ -46,6 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error(request.getRequestURL() + "에 대한 accessToken이 존재하지 않음");
             throw new GeneralHandler(ErrorStatus._BAD_REQUEST);
         }
+
+        redisUtil.checkTokenBlacklisted(token);
 
         DecodedJWT decodedJWT = tokenProvider.decodedJWT(token);
         Long id = decodedJWT.getClaim("id").asLong();
