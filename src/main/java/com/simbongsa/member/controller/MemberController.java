@@ -35,15 +35,12 @@ public class MemberController {
     }
 
     /**
-     *
-     * @param loginMemberId
-     * @param memberId 회원id
+     * @param loginMemberId 로그인된 회원의 id
      * @return null
      */
-    @DeleteMapping("/{memberId}")
-    public CustomApiResponse deleteMember(@AuthenticationPrincipal Long loginMemberId,
-                                          @PathVariable Long memberId) {
-        memberService.deleteMember(loginMemberId, memberId);
+    @DeleteMapping
+    public CustomApiResponse deleteMember(@AuthenticationPrincipal Long loginMemberId) {
+        memberService.deleteMember(loginMemberId);
         return CustomApiResponse.onSuccess();
     }
 

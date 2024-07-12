@@ -54,7 +54,7 @@ class MemberServiceImplTest {
         memberRepository.save(member);
 
         //when
-        memberService.deleteMember(1L, 1L);
+        memberService.deleteMember(1L);
 
         //then
         assertThrows(GeneralHandler.class, () -> entityFacade.getMember(1L));

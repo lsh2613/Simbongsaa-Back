@@ -27,17 +27,9 @@ public class MemberServiceImpl implements MemberService {
     private final RedisUtil redisUtil;
 
     @Override
-    public void deleteMember(Long loginMemberId, Long memberId) {
-        Member member = entityFacade.getMember(memberId);
-        isAuthorizedMember(loginMemberId, memberId);
+    public void deleteMember(Long loginMemberId) {
+        Member member = entityFacade.getMember(loginMemberId);
         memberRepository.delete(member);
-    }
-
-    private void isAuthorizedMember(Long loginMemberId, Long memberId) {
-        if (!loginMemberId.equals(memberId)) {
-            throw new GeneralHandler(ErrorStatus._UNAUTHORIZED);
-        }
-
     }
 
     @Override
