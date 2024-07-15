@@ -4,6 +4,7 @@ import com.simbongsa.global.common.apiPayload.CustomApiResponse;
 import com.simbongsa.group.dto.req.GroupCreateReq;
 import com.simbongsa.group.dto.req.GroupSearchReq;
 import com.simbongsa.group.dto.req.GroupUpdateReq;
+import com.simbongsa.group.dto.res.GroupMemberRes;
 import com.simbongsa.group.dto.res.GroupRes;
 import com.simbongsa.group.dto.res.GroupSearchRes;
 import com.simbongsa.group.service.GroupService;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -96,5 +99,16 @@ public class GroupController {
 
     //TODO: 강퇴
 
+    /**
+     * 그룹 멤버 조회
+     *
+     * @param groupId 그룹 Id
+     * @return 그룹에 속한 멤버 List
+     */
+    @GetMapping("/{groupId}/members")
+    public CustomApiResponse<List<GroupMemberRes>> getGroupMembers(@PathVariable Long groupId) {
+        List<GroupMemberRes> groupMembers = groupService.getGroupMembers(groupId);
+        return CustomApiResponse.onSuccess(groupMembers);
+    }
 
 }

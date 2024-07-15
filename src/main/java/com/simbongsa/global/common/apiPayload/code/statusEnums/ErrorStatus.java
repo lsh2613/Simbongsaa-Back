@@ -39,6 +39,9 @@ public enum ErrorStatus implements BaseCode {
     GROUP_JOIN_CONFLICT(HttpStatus.CONFLICT, "GROUP_JOIN409", "지원 신청이 이미 존재합니다."),
     GROUP_JOIN_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUP_JOIN4042", "그룹 신청을 찾을 수 없습니다."),
 
+    // 그룹 유저 관련
+    GROUP_USER_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUPUSER404", "해당 그룹에서 유저를 찾을 수 없습니다."),
+
     // 공지 관련
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "NOTICE4001", "존재하지 않는 공지 ID입니다."),
 

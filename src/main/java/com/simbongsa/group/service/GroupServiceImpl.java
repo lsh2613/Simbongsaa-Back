@@ -6,6 +6,7 @@ import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.group.dto.req.GroupCreateReq;
 import com.simbongsa.group.dto.req.GroupSearchReq;
 import com.simbongsa.group.dto.req.GroupUpdateReq;
+import com.simbongsa.group.dto.res.GroupMemberRes;
 import com.simbongsa.group.dto.res.GroupRes;
 import com.simbongsa.group.dto.res.GroupSearchRes;
 import com.simbongsa.group.entity.Group;
@@ -81,6 +82,12 @@ public class GroupServiceImpl implements GroupService{
         Group group = entityFacade.getGroup(groupId);
         checkMemberRole(group.getGroupLeader().getId(), memberId);
         groupRepository.delete(group);
+    }
+
+    @Override
+    public List<GroupMemberRes> getGroupMembers(Long groupId) {
+        List<GroupUser> groupUserByGroupId = entityFacade.getGroupUserByGroupId(groupId);
+        return groupUserByGroupId.stream().map(GroupMemberRes::mapGroupUserToMember).toList();
     }
 
     private void checkMemberRole(Long leaderId, Long memberId) {
