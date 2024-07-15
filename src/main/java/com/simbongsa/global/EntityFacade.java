@@ -59,4 +59,10 @@ public class EntityFacade {
         return groupUserRepository.findByGroup_Id(groupId);
     }
 
+    public GroupUser getGroupUserByGroupIdAndMemberId(Long groupId, Long memberId) {
+        Optional<GroupUser> groupUserByGroupIdAndMemberId = groupUserRepository.findByGroup_IdAndMember_Id(groupId, memberId);
+        if (groupUserByGroupIdAndMemberId.isEmpty())
+            throw new GeneralHandler(ErrorStatus.GROUP_USER_NOT_FOUND);
+        return groupUserByGroupIdAndMemberId.get();
+    }
 }

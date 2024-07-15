@@ -12,6 +12,8 @@ import com.simbongsa.group.dto.res.GroupSearchRes;
 import com.simbongsa.group.entity.Group;
 import com.simbongsa.group.repository.GroupRepository;
 import com.simbongsa.group.repository.GroupRepositoryCustom;
+import com.simbongsa.group_user.entity.GroupUser;
+import com.simbongsa.group_user.repository.GroupUserRepository;
 import com.simbongsa.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class GroupServiceImpl implements GroupService{
     private final EntityFacade entityFacade;
     private final GroupRepository groupRepository;
     private final GroupRepositoryCustom groupRepositoryCustom;
+    private final GroupUserRepository groupUserRepository;
 
     @Override
     public GroupRes getGroup(Long memberId, Long groupId) {
@@ -88,6 +91,16 @@ public class GroupServiceImpl implements GroupService{
     public List<GroupMemberRes> getGroupMembers(Long groupId) {
         List<GroupUser> groupUserByGroupId = entityFacade.getGroupUserByGroupId(groupId);
         return groupUserByGroupId.stream().map(GroupMemberRes::mapGroupUserToMember).toList();
+    }
+
+    @Override
+    public void removeMember(Long adminId, Long groupId, Long memberId) {
+        GroupUser groupUserByGroupIdAndMemberId = entityFacade.getGroupUserByGroupIdAndMemberId(groupId, memberId);
+        Group group = groupUserByGroupIdAndMemberId.getGroup();
+        checkMemberRole(group.getGroupLeader().getId(), adminId);
+        group.decreaseCurrentPeople();
+
+        groupUserRepository.deleteById(groupUserByGroupIdAndMemberId.getId());
     }
 
     private void checkMemberRole(Long leaderId, Long memberId) {

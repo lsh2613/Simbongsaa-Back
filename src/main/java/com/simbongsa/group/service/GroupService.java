@@ -17,4 +17,5 @@ public interface GroupService {
     void updateGroup(Long memberId, Long groupId, GroupUpdateReq groupUpdateReq);
     void deleteGroup(Long memberId, Long groupId);
     List<GroupMemberRes> getGroupMembers(Long groupId);
+    void removeMember(Long adminId, Long groupId, Long memberId);
 }

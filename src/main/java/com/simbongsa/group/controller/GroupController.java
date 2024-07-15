@@ -111,4 +111,12 @@ public class GroupController {
         return CustomApiResponse.onSuccess(groupMembers);
     }
 
+    //TODO: 강퇴
+    @DeleteMapping("/{groupId}/members/{memberId}")
+    public CustomApiResponse<?> removeMember(@AuthenticationPrincipal Long adminId,
+                                             @PathVariable Long groupId,
+                                             @PathVariable Long memberId) {
+        groupService.removeMember(adminId, groupId, memberId);
+        return CustomApiResponse.onSuccess();
+    }
 }
