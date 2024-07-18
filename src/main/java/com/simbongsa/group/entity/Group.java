@@ -41,4 +41,5 @@ public class Group extends BaseEntity {
     public void increaseCurrentPeople() {
         this.currentPeople++;
     }
+    public void decreaseCurrentPeople() { this.currentPeople--; }
 }

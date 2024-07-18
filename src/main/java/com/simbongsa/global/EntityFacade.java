@@ -6,6 +6,8 @@ import com.simbongsa.group.entity.Group;
 import com.simbongsa.group.repository.GroupRepository;
 import com.simbongsa.group_join.entity.GroupJoin;
 import com.simbongsa.group_join.repository.GroupJoinRepository;
+import com.simbongsa.group_user.entity.GroupUser;
+import com.simbongsa.group_user.repository.GroupUserRepository;
 import com.simbongsa.member.entity.Member;
 import com.simbongsa.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class EntityFacade {
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
     private final GroupJoinRepository groupJoinRepository;
+    private final GroupUserRepository groupUserRepository;
     public Member getMember(Long memberId) {
         Optional<Member> memberById = memberRepository.findById(memberId);
         if (memberById.isEmpty())
@@ -50,5 +53,16 @@ public class EntityFacade {
     }
     public Optional<GroupJoin> getGroupJoinByGroupIdAndMemberId(Long groupId, Long memberId) {
         return groupJoinRepository.findByGroup_IdAndMember_Id(groupId, memberId);
+    }
+
+    public List<GroupUser> getGroupUserByGroupId(Long groupId) {
+        return groupUserRepository.findByGroup_Id(groupId);
+    }
+
+    public GroupUser getGroupUserByGroupIdAndMemberId(Long groupId, Long memberId) {
+        Optional<GroupUser> groupUserByGroupIdAndMemberId = groupUserRepository.findByGroup_IdAndMember_Id(groupId, memberId);
+        if (groupUserByGroupIdAndMemberId.isEmpty())
+            throw new GeneralHandler(ErrorStatus.GROUP_USER_NOT_FOUND);
+        return groupUserByGroupIdAndMemberId.get();
     }
 }
