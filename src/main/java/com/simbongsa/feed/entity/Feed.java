@@ -2,8 +2,8 @@ package com.simbongsa.feed.entity;
 
 import com.simbongsa.comment.entity.Comment;
 import com.simbongsa.global.common.entity.BaseEntity;
-import com.simbongsa.global.common.entity.Image;
-import com.simbongsa.group.entity.Group;
+import com.simbongsa.global.image.entity.Image;
+import com.simbongsa.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -23,19 +24,34 @@ public class Feed extends BaseEntity {
     @Column(name = "feed_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private Group group;
-
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String body;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
-    private List<Image> image = new ArrayList<>();
+    @Column(nullable = false)
+    private Integer views;
+    @Column(nullable = false)
+    private Integer likes;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comment = new ArrayList<>();
+
+    public void addImage(Image image) {
+        if (images == null) images = new ArrayList<>();
+        images.add(image);
+        image.setFeed(this);
+    }
+
+    public void addImages(List<Image> images) {
+        if (images == null) images = new ArrayList<>();
+        images.forEach(this::addImage);
+    }
 }
