@@ -1,5 +1,6 @@
 package com.simbongsa.member.entity;
 
+import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.global.common.constant.OauthProvider;
 import com.simbongsa.global.common.constant.Role;
@@ -41,11 +42,28 @@ public class Member extends BaseEntity {
 
     private Integer volunteerParticipationCnt;
 
+    private MemberStatus memberStatus;
+
     public Member(OauthMember request) {
         this.socialId = request.getSocialId();
         this.oauthProvider = request.getOauthProvider();
         this.email = request.getEmail();
         this.nickname = request.getNickname();
         this.role = Role.GUEST;
+    }
+
+    @Builder
+    public Member(String socialId, OauthProvider oauthProvider, String email, String nickname, int age,
+                  String profileImg, Role role, String introduction, int volunteerParticipationCnt, MemberStatus memberStatus) {
+        this.socialId = socialId;
+        this.oauthProvider = oauthProvider;
+        this.email = email;
+        this.nickname = nickname;
+        this.age = age;
+        this.profileImg = profileImg;
+        this.role = role;
+        this.introduction = introduction;
+        this.volunteerParticipationCnt = volunteerParticipationCnt;
+        this.memberStatus = memberStatus;
     }
 }

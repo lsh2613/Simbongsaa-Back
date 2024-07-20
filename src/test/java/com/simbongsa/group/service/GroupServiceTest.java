@@ -2,6 +2,7 @@ package com.simbongsa.group.service;
 
 import com.simbongsa.global.EntityFacade;
 import com.simbongsa.global.common.constant.GroupStatus;
+import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.constant.OauthProvider;
 import com.simbongsa.global.common.constant.Role;
 import com.simbongsa.global.common.exception.GeneralHandler;
@@ -48,7 +49,8 @@ class GroupServiceTest {
                 null,
                 Role.USER,
                 "안녕하세요 개발자입니다.",
-                0
+                0,
+                MemberStatus.PUBLIC
         );
         Member saveMember = memberRepository.save(member);
         this.memberId = saveMember.getId();
