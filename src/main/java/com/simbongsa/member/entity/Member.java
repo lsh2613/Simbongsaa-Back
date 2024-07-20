@@ -52,7 +52,6 @@ public class Member extends BaseEntity {
         this.role = Role.GUEST;
     }
 
-    @Builder
     public Member(String socialId, OauthProvider oauthProvider, String email, String nickname, int age,
                   String profileImg, Role role, String introduction, int volunteerParticipationCnt, MemberStatus memberStatus) {
         this.socialId = socialId;
