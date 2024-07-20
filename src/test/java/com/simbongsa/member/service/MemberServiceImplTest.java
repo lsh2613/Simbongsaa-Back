@@ -42,7 +42,8 @@ class MemberServiceImplTest {
                 null,
                 Role.USER,
                 "안녕하세요 개발자입니다.",
-                0
+                0,
+                null
         );
         return member;
     }

@@ -62,7 +62,8 @@ class GroupJoinServiceTest {
                 null,
                 Role.USER,
                 "안녕하세요 개발자입니다.",
-                0
+                0,
+                null
         );
 
         Member member02 = new Member(
@@ -75,7 +76,8 @@ class GroupJoinServiceTest {
                 null,
                 Role.USER,
                 "안녕하세요 백수입니다.",
-                0
+                0,
+                null
         );
 
         Member member03 = new Member(
@@ -88,7 +90,8 @@ class GroupJoinServiceTest {
                 null,
                 Role.USER,
                 "안녕하세요 새내기입니다.",
-                0
+                0,
+                null
         );
         Member saveMember01 = memberRepository.save(member01);
         Member saveMember02 = memberRepository.save(member02);

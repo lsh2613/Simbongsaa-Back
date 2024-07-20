@@ -48,7 +48,8 @@ class GroupServiceTest {
                 null,
                 Role.USER,
                 "안녕하세요 개발자입니다.",
-                0
+                0,
+                null
         );
         Member saveMember = memberRepository.save(member);
         this.memberId = saveMember.getId();
