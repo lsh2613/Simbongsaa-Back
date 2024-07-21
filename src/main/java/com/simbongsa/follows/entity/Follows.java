@@ -25,4 +25,9 @@ public class Follows extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followed_member_id")
     private Member followedMember;
+
+    public Follows(Member loginMember, Member member) {
+        this.followingMember = loginMember;
+        this.followedMember = member;
+    }
 }

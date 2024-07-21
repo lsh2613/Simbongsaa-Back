@@ -1,5 +1,9 @@
 package com.simbongsa.global;
 
+import com.simbongsa.follows.entity.Follows;
+import com.simbongsa.follows.repository.FollowsRepository;
+import com.simbongsa.follows_requests.entity.FollowsRequests;
+import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
 import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
 import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.group.entity.Group;
@@ -23,6 +27,9 @@ public class EntityFacade {
     private final GroupRepository groupRepository;
     private final GroupJoinRepository groupJoinRepository;
     private final GroupUserRepository groupUserRepository;
+    private final FollowsRepository followsRepository;
+    private final FollowsRequestRepository followsRequestRepository;
+
     public Member getMember(Long memberId) {
         Optional<Member> memberById = memberRepository.findById(memberId);
         if (memberById.isEmpty())
@@ -42,6 +49,10 @@ public class EntityFacade {
         if (groupJoinById.isEmpty())
             throw new GeneralHandler(ErrorStatus.GROUP_JOIN_NOT_FOUND);
         return groupJoinById.get();
+    }
+
+    public Optional<Follows> getFollowsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
+        return followsRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
     }
 
     public List<GroupJoin> getGroupJoinsByMemberId(Long memberId) {
