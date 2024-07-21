@@ -11,4 +11,6 @@ public interface FollowsRequestsService {
     void decideRequests(Long loginId, FollowsRequestsDecideReq followsRequestsDecideReq);
 
     List<FollowsRequestsRes> getFollowsRequestsList(Long memberId);
+
+    List<FollowsRequestsRes> getMyFollowsRequestsList(Long memberId);
 }

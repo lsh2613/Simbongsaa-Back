@@ -85,4 +85,8 @@ public class EntityFacade {
     public List<FollowsRequests> getFollowsRequestsListByFollowedMemberId(Long memberId) {
         return followsRequestRepository.findAllByFollowedMemberId(memberId);
     }
+
+    public List<FollowsRequests> getFollowsRequestsListByFollowingMemberId(Long memberId) {
+        return followsRequestRepository.findAllByFollowingMemberId(memberId);
+    }
 }

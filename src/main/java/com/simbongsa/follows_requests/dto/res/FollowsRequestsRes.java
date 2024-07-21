@@ -20,4 +20,14 @@ public record FollowsRequestsRes(
                 .profileImg(followingMember.getProfileImg())
                 .build();
     }
+
+    public static FollowsRequestsRes mapFollowedMemberToRequestsRes(FollowsRequests followsRequests) {
+        Member followedMember = followsRequests.getFollowedMember();
+        return FollowsRequestsRes.builder()
+                .followsRequestId(followsRequests.getId())
+                .memberId(followedMember.getId())
+                .nickname(followedMember.getNickname())
+                .profileImg(followedMember.getProfileImg())
+                .build();
+    }
 }
