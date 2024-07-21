@@ -105,4 +105,16 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
                 .map(FollowsRequestsRes::mapFollowedMemberToRequestsRes)
                 .toList();
     }
+
+    @Override
+    public void delete(Long loginId, Long followsRequestsId) {
+        Member member = entityFacade.getMember(loginId);
+        FollowsRequests followsRequests = entityFacade.getFollowsRequests(followsRequestsId);
+
+        if (!followsRequests.getFollowingMember().equals(member)) {
+            throw new GeneralHandler(ErrorStatus.USER_FORBIDDEN);
+        }
+
+        followsRequestRepository.delete(followsRequests);
+    }
 }

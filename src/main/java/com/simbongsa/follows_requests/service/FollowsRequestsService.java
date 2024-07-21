@@ -13,4 +13,6 @@ public interface FollowsRequestsService {
     List<FollowsRequestsRes> getFollowsRequestsList(Long memberId);
 
     List<FollowsRequestsRes> getMyFollowsRequestsList(Long memberId);
+
+    void delete(Long loginId, Long followsRequestsId);
 }

@@ -60,11 +60,24 @@ public class FollowsRequestsController {
     /**
      * 내가 신청한 팔로우 요청 조회
      * @param loginId 유저 id
-     * @return
+     * @return List<FollowsRequestsRes> 내가 신청한 팔로우 요청 리스트
      */
     @GetMapping("/my-requests")
     public CustomApiResponse getMyFollowRequests(@AuthenticationPrincipal Long loginId) {
         List<FollowsRequestsRes> myFollowsRequestsList = followsRequestsService.getMyFollowsRequestsList(loginId);
         return CustomApiResponse.onSuccess(myFollowsRequestsList);
+    }
+
+    /**
+     * 팔로우 요청 삭제
+     * @param loginId 유저id
+     * @param followsRequestsId 삭제할 팔로우 요청 id
+     * @return null
+     */
+    @DeleteMapping("/{followsRequestsId}")
+    public CustomApiResponse deleteFollowsRequests(@AuthenticationPrincipal Long loginId,
+                                                   @PathVariable Long followsRequestsId) {
+        followsRequestsService.delete(loginId, followsRequestsId);
+        return CustomApiResponse.onSuccess();
     }
 }
