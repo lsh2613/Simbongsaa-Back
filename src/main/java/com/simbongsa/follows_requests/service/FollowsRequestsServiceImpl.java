@@ -92,8 +92,8 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
 
     @Override
     public List<FollowsRequestsRes> getFollowsRequestsList(Long memberId) {
-        List<FollowsRequests> followsRequestsListByMemberId = entityFacade.getFollowsRequestsListByMemberId(memberId);
-        return followsRequestsListByMemberId.stream()
+        List<FollowsRequests> requests = entityFacade.getFollowsRequestsListByFollowedMemberId(memberId);
+        return requests.stream()
                 .map(FollowsRequestsRes::mapMemberToRequestsRes)
                 .toList();
     }
