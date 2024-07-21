@@ -20,9 +20,9 @@ public class Follows extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following_member_id")
-    private Member followingMemberId;
+    private Member followingMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followed_member_id")
-    private Member followedMemberId;
+    private Member followedMember;
 }
