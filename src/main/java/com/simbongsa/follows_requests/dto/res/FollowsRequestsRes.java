@@ -11,7 +11,7 @@ public record FollowsRequestsRes(
         String nickname,
         String profileImg
         ) {
-    public static FollowsRequestsRes mapMemberToRequestsRes(FollowsRequests followsRequests) {
+    public static FollowsRequestsRes mapFollowingMemberToRequestsRes(FollowsRequests followsRequests) {
         Member followingMember = followsRequests.getFollowingMember();
         return FollowsRequestsRes.builder()
                 .followsRequestId(followsRequests.getId())

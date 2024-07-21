@@ -94,7 +94,7 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
     public List<FollowsRequestsRes> getFollowsRequestsList(Long memberId) {
         List<FollowsRequests> requests = entityFacade.getFollowsRequestsListByFollowedMemberId(memberId);
         return requests.stream()
-                .map(FollowsRequestsRes::mapMemberToRequestsRes)
+                .map(FollowsRequestsRes::mapFollowingMemberToRequestsRes)
                 .toList();
     }
 }
