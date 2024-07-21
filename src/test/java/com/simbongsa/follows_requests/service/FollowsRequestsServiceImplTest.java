@@ -199,4 +199,32 @@ class FollowsRequestsServiceImplTest {
         assertThat(followsRequestsRes1.memberId()).isEqualTo(followingMemberId1);
         assertThat(followsRequestsRes2.memberId()).isEqualTo(followingMemberId2);
     }
+
+    @Test
+    void 내가_신청한_팔로우_요청_조회() {
+        //given
+        Long followingMemberId = saveMember("test", "socialId", MemberStatus.PUBLIC);
+        Long followedMemberId1 = saveMember("test1", "socialId1", MemberStatus.PRIVATE);
+        Long followedMemberId2 = saveMember("test2", "socialId2", MemberStatus.PRIVATE);
+
+        followsRequestsService.follow(followingMemberId, followedMemberId1);
+        followsRequestsService.follow(followingMemberId, followedMemberId2);
+
+        List<FollowsRequests> followsRequestsList = followsRequestRepository.findAllByFollowingMemberId(followingMemberId);
+        FollowsRequests followsRequests1 = followsRequestsList.get(0);
+        FollowsRequests followsRequests2 = followsRequestsList.get(1);
+
+        //when
+        List<FollowsRequestsRes> myFollowsRequestsList = followsRequestsService.getMyFollowsRequestsList(followingMemberId);
+
+        //then
+        FollowsRequestsRes followsRequestsRes1 = myFollowsRequestsList.get(0);
+        FollowsRequestsRes followsRequestsRes2 = myFollowsRequestsList.get(1);
+
+        assertThat(myFollowsRequestsList.size()).isEqualTo(2);
+        assertThat(followsRequestsRes1.followsRequestId()).isEqualTo(followsRequests1.getId());
+        assertThat(followsRequestsRes2.followsRequestId()).isEqualTo(followsRequests2.getId());
+        assertThat(followsRequestsRes1.memberId()).isEqualTo(followedMemberId1);
+        assertThat(followsRequestsRes2.memberId()).isEqualTo(followedMemberId2);
+    }
 }
