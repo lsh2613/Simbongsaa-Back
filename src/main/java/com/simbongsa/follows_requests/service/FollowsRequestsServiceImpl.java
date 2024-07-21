@@ -2,10 +2,14 @@ package com.simbongsa.follows_requests.service;
 
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
+import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
 import com.simbongsa.global.EntityFacade;
+import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
+import com.simbongsa.global.common.constant.FollowsRequestsDecide;
 import com.simbongsa.global.common.constant.MemberStatus;
+import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,6 +55,35 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
             case PRIVATE:
                 followsRequestRepository.save(new FollowsRequests(followingMember, followedMember));
         }
+    }
+
+    @Override
+    public void decideRequests(Long loginId, FollowsRequestsDecideReq followsRequestsDecideReq) {
+        FollowsRequests followsRequests = entityFacade.getFollowsRequests(followsRequestsDecideReq.followsRequestsId());
+        Member followedMember = followsRequests.getFollowedMember();
+
+        deleteFollowsRequests(loginId, followedMember.getId(), followsRequests);
+
+        FollowsRequestsDecide decideType = followsRequestsDecideReq.followRequestsDecide();
+        followsIfAccept(decideType, followedMember, followsRequests);
+    }
+
+    private void followsIfAccept(FollowsRequestsDecide followRequestsDecide, Member followedMember, FollowsRequests followsRequests) {
+        if (followRequestsDecide == FollowsRequestsDecide.ACCEPT) {
+            Follows follows = new Follows(followsRequests.getFollowingMember(), followedMember);
+            followsRepository.save(follows);
+        }
+    }
+
+    private void deleteFollowsRequests(Long loginId, Long followedMemberId, FollowsRequests followsRequests) {
+        if (!validateFollowsRequestsTarget(loginId, followedMemberId)) {
+            throw new GeneralHandler(ErrorStatus.USER_FORBIDDEN);
+        }
+        followsRequestRepository.delete(followsRequests);
+    }
+
+    private static boolean validateFollowsRequestsTarget(Long loginId, Long followedMemberId) {
+        return followedMemberId.equals(loginId);
     }
 
 }

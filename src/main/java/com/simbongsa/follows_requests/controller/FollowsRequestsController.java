@@ -32,4 +32,18 @@ public class FollowsRequestsController {
 
         return CustomApiResponse.onSuccess();
     }
+
+    /**
+     * 팔로우 요청에 대한 수락/거절
+     * @param loginId 요청에 대해 결정하는 사용자 id
+     * @param followsRequestsDecideReq 팔로우요청id 수락/거절
+     * @return null
+     */
+    @PostMapping("/{followsRequestsId}/decision")
+    public CustomApiResponse decideRequests(@AuthenticationPrincipal Long loginId,
+                                            @RequestBody FollowsRequestsDecideReq followsRequestsDecideReq) {
+        followsRequestsService.decideRequests(loginId, followsRequestsDecideReq);
+        return CustomApiResponse.onSuccess();
+    }
+
 }

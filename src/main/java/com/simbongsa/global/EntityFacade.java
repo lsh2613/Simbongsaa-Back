@@ -76,4 +76,10 @@ public class EntityFacade {
             throw new GeneralHandler(ErrorStatus.GROUP_USER_NOT_FOUND);
         return groupUserByGroupIdAndMemberId.get();
     }
+
+    public FollowsRequests getFollowsRequests(Long followsRequestsId) {
+        return followsRequestRepository.findById(followsRequestsId).orElseThrow(
+                () -> new GeneralHandler(ErrorStatus.FOLLOWS_REQUESTS_NOT_FOUND));
+    }
+
 }
