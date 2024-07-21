@@ -46,4 +46,14 @@ public class FollowsRequestsController {
         return CustomApiResponse.onSuccess();
     }
 
+    /**
+     * 내가 받은 팔로우 요청 리스트 조회
+     * @param loginId 유저id
+     * @return List<FollowsRequestsRes> 내가 받은 팔로우 요청 리스트
+     */
+    @GetMapping
+    public CustomApiResponse getFollowRequests(@AuthenticationPrincipal Long loginId) {
+        List<FollowsRequestsRes> followsRequestsList = followsRequestsService.getFollowsRequestsList(loginId);
+        return CustomApiResponse.onSuccess(followsRequestsList);
+    }
 }

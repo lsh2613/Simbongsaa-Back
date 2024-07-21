@@ -3,6 +3,7 @@ package com.simbongsa.follows_requests.service;
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
 import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
+import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
 import com.simbongsa.global.EntityFacade;
@@ -12,11 +13,14 @@ import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -86,4 +90,11 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
         return followedMemberId.equals(loginId);
     }
 
+    @Override
+    public List<FollowsRequestsRes> getFollowsRequestsList(Long memberId) {
+        List<FollowsRequests> followsRequestsListByMemberId = entityFacade.getFollowsRequestsListByMemberId(memberId);
+        return followsRequestsListByMemberId.stream()
+                .map(FollowsRequestsRes::mapMemberToRequestsRes)
+                .toList();
+    }
 }

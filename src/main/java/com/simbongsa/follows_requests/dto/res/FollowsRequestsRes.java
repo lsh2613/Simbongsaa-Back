@@ -1,0 +1,23 @@
+package com.simbongsa.follows_requests.dto.res;
+
+import com.simbongsa.follows_requests.entity.FollowsRequests;
+import com.simbongsa.member.entity.Member;
+import lombok.Builder;
+
+@Builder
+public record FollowsRequestsRes(
+        Long followsRequestId,
+        Long memberId,
+        String nickname,
+        String profileImg
+        ) {
+    public static FollowsRequestsRes mapMemberToRequestsRes(FollowsRequests followsRequests) {
+        Member followingMember = followsRequests.getFollowingMember();
+        return FollowsRequestsRes.builder()
+                .followsRequestId(followsRequests.getId())
+                .memberId(followingMember.getId())
+                .nickname(followingMember.getNickname())
+                .profileImg(followingMember.getProfileImg())
+                .build();
+    }
+}
