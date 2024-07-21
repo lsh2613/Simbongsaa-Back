@@ -227,4 +227,21 @@ class FollowsRequestsServiceImplTest {
         assertThat(followsRequestsRes1.memberId()).isEqualTo(followedMemberId1);
         assertThat(followsRequestsRes2.memberId()).isEqualTo(followedMemberId2);
     }
+
+    @Test
+    void 팔로우_요청_삭제() {
+        //given
+        Long followingMemberId = saveMember("test1", "socialId1", MemberStatus.PUBLIC);
+        Long followedMemberId = saveMember("test2", "socialId2", MemberStatus.PRIVATE);
+
+        followsRequestsService.follow(followingMemberId, followedMemberId);
+        FollowsRequests followsRequests = followsRequestRepository.findAll().get(0);
+
+        //when
+        followsRequestsService.delete(followingMemberId, followsRequests.getId());
+
+        //then
+        List<FollowsRequests> all = followsRequestRepository.findAll();
+        assertThat(all.size()).isEqualTo(0);
+    }
 }
