@@ -2,8 +2,10 @@ package com.simbongsa.follows_requests.service;
 
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
+import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
+import com.simbongsa.global.common.constant.FollowsRequestsDecide;
 import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.constant.OauthProvider;
 import com.simbongsa.global.common.constant.Role;
@@ -117,6 +119,56 @@ class FollowsRequestsServiceImplTest {
 
         assertThat(allFollows.size()).isEqualTo(0);
         assertThat(allFollowsRequests.size()).isEqualTo(0);
+    }
+
+    @Test
+    void 팔로우_요청_수락() {
+        //given
+        Long followingMemberId = saveMember("test1", MemberStatus.PUBLIC);
+        Long followedMemberId = saveMember("test2", MemberStatus.PRIVATE);
+        followsRequestsService.follow(followingMemberId, followedMemberId);
+
+        Long followsRequestsId = followsRequestRepository.findAll().get(0).getId();
+        FollowsRequestsDecideReq followsRequestsDecideReq = new FollowsRequestsDecideReq(followsRequestsId, FollowsRequestsDecide.ACCEPT);
+
+        //when
+        followsRequestsService.decideRequests(followedMemberId, followsRequestsDecideReq);
+
+        //then
+        List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();
+
+        List<Follows> allFollows = followsRepository.findAll();
+        Follows follows = allFollows.get(0);
+
+        Member followingMember = follows.getFollowingMember();
+        Member followedMember = follows.getFollowedMember();
+
+        assertThat(allFollowsRequests.size()).isEqualTo(0);
+        assertThat(allFollows.size()).isEqualTo(1);
+        assertThat(followingMember.getId()).isEqualTo(followingMemberId);
+        assertThat(followedMember.getId()).isEqualTo(followedMemberId);
+    }
+
+    @Test
+    void 팔로우_요청_거절() {
+        //given
+        Long followingMemberId = saveMember("test1", MemberStatus.PUBLIC);
+        Long followedMemberId = saveMember("test2", MemberStatus.PRIVATE);
+        followsRequestsService.follow(followingMemberId, followedMemberId);
+
+        Long followsRequestsId = followsRequestRepository.findAll().get(0).getId();
+        FollowsRequestsDecideReq followsRequestsDecideReq = new FollowsRequestsDecideReq(followsRequestsId, FollowsRequestsDecide.REJECT);
+
+        //when
+        followsRequestsService.decideRequests(followedMemberId, followsRequestsDecideReq);
+
+        //then
+        List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();
+
+        List<Follows> allFollows = followsRepository.findAll();
+
+        assertThat(allFollowsRequests.size()).isEqualTo(0);
+        assertThat(allFollows.size()).isEqualTo(0);
     }
 
 }
