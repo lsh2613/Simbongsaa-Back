@@ -3,6 +3,7 @@ package com.simbongsa.follows_requests.service;
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
 import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
+import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
 import com.simbongsa.global.common.constant.FollowsRequestsDecide;
@@ -171,4 +172,31 @@ class FollowsRequestsServiceImplTest {
         assertThat(allFollows.size()).isEqualTo(0);
     }
 
+    @Test
+    void 내가_받은_팔로우_요청_조회() {
+        //given
+        Long followedMemberId = saveMember("test", "socialId", MemberStatus.PRIVATE);
+        Long followingMemberId1 = saveMember("test1", "socialId1", MemberStatus.PUBLIC);
+        Long followingMemberId2 = saveMember("test2", "socialId2", MemberStatus.PUBLIC);
+
+        followsRequestsService.follow(followingMemberId1, followedMemberId);
+        followsRequestsService.follow(followingMemberId2, followedMemberId);
+
+        List<FollowsRequests> followsRequestsList = followsRequestRepository.findAllByFollowedMemberId(followedMemberId);
+        FollowsRequests followsRequests1 = followsRequestsList.get(0);
+        FollowsRequests followsRequests2 = followsRequestsList.get(1);
+
+        //when
+        List<FollowsRequestsRes> followsRequestsResList = followsRequestsService.getFollowsRequestsList(followedMemberId);
+
+        //then
+        FollowsRequestsRes followsRequestsRes1 = followsRequestsResList.get(0);
+        FollowsRequestsRes followsRequestsRes2 = followsRequestsResList.get(1);
+
+        assertThat(followsRequestsResList.size()).isEqualTo(2);
+        assertThat(followsRequestsRes1.followsRequestId()).isEqualTo(followsRequests1.getId());
+        assertThat(followsRequestsRes2.followsRequestId()).isEqualTo(followsRequests2.getId());
+        assertThat(followsRequestsRes1.memberId()).isEqualTo(followingMemberId1);
+        assertThat(followsRequestsRes2.memberId()).isEqualTo(followingMemberId2);
+    }
 }
