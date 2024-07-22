@@ -82,6 +82,10 @@ public class EntityFacade {
                 () -> new GeneralHandler(ErrorStatus.FOLLOWS_REQUESTS_NOT_FOUND));
     }
 
+    public Optional<Follows> getFollowsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
+        return followsRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
+    }
+
     public List<FollowsRequests> getFollowsRequestsListByFollowedMemberId(Long memberId) {
         return followsRequestRepository.findAllByFollowedMemberId(memberId);
     }
