@@ -39,7 +39,7 @@ public class FollowsRequestsController {
      * @param followsRequestsDecideReq 팔로우요청id 수락/거절
      * @return null
      */
-    @PostMapping("/{followsRequestsId}/decision")
+    @PostMapping("/decision")
     public CustomApiResponse decideRequests(@AuthenticationPrincipal Long loginId,
                                             @RequestBody FollowsRequestsDecideReq followsRequestsDecideReq) {
         followsRequestsService.decideRequests(loginId, followsRequestsDecideReq);
