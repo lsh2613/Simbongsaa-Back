@@ -51,10 +51,6 @@ public class EntityFacade {
         return groupJoinById.get();
     }
 
-    public Optional<Follows> getFollowsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
-        return followsRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
-    }
-
     public List<GroupJoin> getGroupJoinsByMemberId(Long memberId) {
         return groupJoinRepository.findByMember_Id(memberId);
     }
@@ -65,7 +61,6 @@ public class EntityFacade {
     public Optional<GroupJoin> getGroupJoinByGroupIdAndMemberId(Long groupId, Long memberId) {
         return groupJoinRepository.findByGroup_IdAndMember_Id(groupId, memberId);
     }
-
     public List<GroupUser> getGroupUserByGroupId(Long groupId) {
         return groupUserRepository.findByGroup_Id(groupId);
     }

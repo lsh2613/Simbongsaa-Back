@@ -10,9 +10,9 @@ public interface FollowsRequestsService {
 
     void decideRequests(Long loginId, FollowsRequestsDecideReq followsRequestsDecideReq);
 
-    List<FollowsRequestsRes> getFollowsRequestsList(Long memberId);
+    List<FollowsRequestsRes> getReceivedFollowsRequestsList(Long memberId);
 
-    List<FollowsRequestsRes> getMyFollowsRequestsList(Long memberId);
+    List<FollowsRequestsRes> getSentFollowsRequestsList(Long memberId);
 
     void delete(Long loginId, Long followsRequestsId);
 }

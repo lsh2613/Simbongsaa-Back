@@ -91,7 +91,7 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
     }
 
     @Override
-    public List<FollowsRequestsRes> getFollowsRequestsList(Long memberId) {
+    public List<FollowsRequestsRes> getReceivedFollowsRequestsList(Long memberId) {
         List<FollowsRequests> requests = entityFacade.getFollowsRequestsListByFollowedMemberId(memberId);
         return requests.stream()
                 .map(FollowsRequestsRes::mapFollowingMemberToRequestsRes)
@@ -99,7 +99,7 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
     }
 
     @Override
-    public List<FollowsRequestsRes> getMyFollowsRequestsList(Long memberId) {
+    public List<FollowsRequestsRes> getSentFollowsRequestsList(Long memberId) {
         List<FollowsRequests> requests = entityFacade.getFollowsRequestsListByFollowingMemberId(memberId);
         return requests.stream()
                 .map(FollowsRequestsRes::mapFollowedMemberToRequestsRes)

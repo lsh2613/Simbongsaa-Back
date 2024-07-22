@@ -187,7 +187,7 @@ class FollowsRequestsServiceImplTest {
         FollowsRequests followsRequests2 = followsRequestsList.get(1);
 
         //when
-        List<FollowsRequestsRes> followsRequestsResList = followsRequestsService.getFollowsRequestsList(followedMemberId);
+        List<FollowsRequestsRes> followsRequestsResList = followsRequestsService.getReceivedFollowsRequestsList(followedMemberId);
 
         //then
         FollowsRequestsRes followsRequestsRes1 = followsRequestsResList.get(0);
@@ -215,7 +215,7 @@ class FollowsRequestsServiceImplTest {
         FollowsRequests followsRequests2 = followsRequestsList.get(1);
 
         //when
-        List<FollowsRequestsRes> myFollowsRequestsList = followsRequestsService.getMyFollowsRequestsList(followingMemberId);
+        List<FollowsRequestsRes> myFollowsRequestsList = followsRequestsService.getSentFollowsRequestsList(followingMemberId);
 
         //then
         FollowsRequestsRes followsRequestsRes1 = myFollowsRequestsList.get(0);
