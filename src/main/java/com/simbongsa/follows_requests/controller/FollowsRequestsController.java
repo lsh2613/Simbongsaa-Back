@@ -51,7 +51,7 @@ public class FollowsRequestsController {
      * @param loginId 유저id
      * @return List<FollowsRequestsRes> 내가 받은 팔로우 요청 리스트
      */
-    @GetMapping("/requests")
+    @GetMapping("/received-requests")
     public CustomApiResponse getFollowRequests(@AuthenticationPrincipal Long loginId) {
         List<FollowsRequestsRes> followsRequestsList = followsRequestsService.getFollowsRequestsList(loginId);
         return CustomApiResponse.onSuccess(followsRequestsList);
@@ -62,7 +62,7 @@ public class FollowsRequestsController {
      * @param loginId 유저 id
      * @return List<FollowsRequestsRes> 내가 신청한 팔로우 요청 리스트
      */
-    @GetMapping("/my-requests")
+    @GetMapping("/sent-requests")
     public CustomApiResponse getMyFollowRequests(@AuthenticationPrincipal Long loginId) {
         List<FollowsRequestsRes> myFollowsRequestsList = followsRequestsService.getMyFollowsRequestsList(loginId);
         return CustomApiResponse.onSuccess(myFollowsRequestsList);
