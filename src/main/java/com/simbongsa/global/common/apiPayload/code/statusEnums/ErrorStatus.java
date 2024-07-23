@@ -45,6 +45,9 @@ public enum ErrorStatus implements BaseCode {
     // 공지 관련
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "NOTICE4001", "존재하지 않는 공지 ID입니다."),
 
+    //피드 관련
+    FEED_NOT_FOUND(HttpStatus.NOT_FOUND, "FEED404", "피드를 찾을 수 없습니다."),
+
     // S3 이미지 업로드
     FAIL_IMAGE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "S500", "S3에 이미지 업로드를 실패했습니다."),
     BAD_REQUEST_IMAGE(HttpStatus.BAD_REQUEST, "S400", "잘못된 이미지 데이터입니다."),

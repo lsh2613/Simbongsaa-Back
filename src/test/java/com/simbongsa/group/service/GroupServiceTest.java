@@ -50,6 +50,7 @@ class GroupServiceTest {
                 Role.USER,
                 "안녕하세요 개발자입니다.",
                 0,
+                null
                 MemberStatus.PUBLIC
         );
         Member saveMember = memberRepository.save(member);

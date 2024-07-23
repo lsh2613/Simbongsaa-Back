@@ -1,5 +1,7 @@
 package com.simbongsa.global;
 
+import com.simbongsa.feed.entity.Feed;
+import com.simbongsa.feed.repository.FeedRepository;
 import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
 import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.group.entity.Group;
@@ -12,17 +14,20 @@ import com.simbongsa.member.entity.Member;
 import com.simbongsa.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Transactional
 @RequiredArgsConstructor
+@Service
 public class EntityFacade {
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
     private final GroupJoinRepository groupJoinRepository;
     private final GroupUserRepository groupUserRepository;
+    private final FeedRepository feedRepository;
     public Member getMember(Long memberId) {
         Optional<Member> memberById = memberRepository.findById(memberId);
         if (memberById.isEmpty())
@@ -64,5 +69,12 @@ public class EntityFacade {
         if (groupUserByGroupIdAndMemberId.isEmpty())
             throw new GeneralHandler(ErrorStatus.GROUP_USER_NOT_FOUND);
         return groupUserByGroupIdAndMemberId.get();
+    }
+
+    public Feed getFeed(Long feedId) {
+        Optional<Feed> feedById = feedRepository.findById(feedId);
+        if (feedById.isEmpty())
+            throw new GeneralHandler(ErrorStatus.FEED_NOT_FOUND);
+        return feedById.get();
     }
 }
