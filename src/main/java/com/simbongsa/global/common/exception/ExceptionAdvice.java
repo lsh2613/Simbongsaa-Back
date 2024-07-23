@@ -52,6 +52,13 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return handleExceptionInternalArgs(e,HttpHeaders.EMPTY,ErrorStatus.valueOf("_BAD_REQUEST"),request,errors);
     }
 
+    // IllegalArgumentException 처리
+    @ExceptionHandler
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e, WebRequest request) {
+        log.error("IllegalArgumentException occurred: {}", e.getMessage(), e);
+        return handleExceptionInternalFalse(e, ErrorStatus._BAD_REQUEST, HttpHeaders.EMPTY, HttpStatus.BAD_REQUEST, request, e.getMessage());
+    }
+
     // 일반적인 Exception 처리
     @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
