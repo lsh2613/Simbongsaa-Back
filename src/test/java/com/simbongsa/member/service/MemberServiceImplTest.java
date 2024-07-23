@@ -1,6 +1,7 @@
 package com.simbongsa.member.service;
 
 import com.simbongsa.global.EntityFacade;
+import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.constant.OauthProvider;
 import com.simbongsa.global.common.constant.Role;
 import com.simbongsa.global.common.exception.GeneralHandler;
@@ -31,9 +32,8 @@ class MemberServiceImplTest {
     @Autowired
     private RedisUtil redisUtil;
 
-    Member createMember(Long id) {
+    Member createMember() {
         Member member = new Member(
-                id,
                 "3231321",
                 OauthProvider.GOOGLE,
                 "test@gmail.com",
@@ -44,6 +44,7 @@ class MemberServiceImplTest {
                 "안녕하세요 개발자입니다.",
                 0,
                 null
+                MemberStatus.PUBLIC
         );
         return member;
     }
@@ -51,27 +52,27 @@ class MemberServiceImplTest {
     @Test
     void deleteMember() {
         //given
-        Member member = createMember(1L);
-        memberRepository.save(member);
+        Member member = createMember();
+        Member saveMember = memberRepository.save(member);
 
         //when
-        memberService.deleteMember(1L);
+        memberService.deleteMember(saveMember.getId());
 
         //then
-        assertThrows(GeneralHandler.class, () -> entityFacade.getMember(1L));
+        assertThrows(GeneralHandler.class, () -> entityFacade.getMember(saveMember.getId()));
     }
 
     @Test
     void 로그아웃_성공() {
         //given
-        Member member = createMember(1L);
-        memberRepository.save(member);
+        Member member = createMember();
+        Member saveMember = memberRepository.save(member);
 
-        String accessToken = tokenProvider.issueAccessToken(1L);
-        String refreshToken = tokenProvider.issueRefreshToken(1L);
+        String accessToken = tokenProvider.issueAccessToken(saveMember.getId());
+        String refreshToken = tokenProvider.issueRefreshToken(saveMember.getId());
 
         //when
-        memberService.logout(accessToken, refreshToken, 1L);
+        memberService.logout(accessToken, refreshToken, saveMember.getId());
 
         //then
         assertThat(redisUtil.getData(refreshToken)).isNull();
@@ -81,14 +82,14 @@ class MemberServiceImplTest {
     @Test
     void 블랙리스트_검증_성공() {
         //given
-        Member member = createMember(1L);
-        memberRepository.save(member);
+        Member member = createMember();
+        Member saveMember = memberRepository.save(member);
 
-        String accessToken = tokenProvider.issueAccessToken(1L);
-        String refreshToken = tokenProvider.issueRefreshToken(1L);
+        String accessToken = tokenProvider.issueAccessToken(saveMember.getId());
+        String refreshToken = tokenProvider.issueRefreshToken(saveMember.getId());
 
         //when
-        memberService.logout(accessToken, refreshToken, 1L);
+        memberService.logout(accessToken, refreshToken, saveMember.getId());
 
         //then
         assertThat(redisUtil.getData(refreshToken)).isNull();

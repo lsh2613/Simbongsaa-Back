@@ -1,6 +1,8 @@
 package com.simbongsa.member.entity;
 
+
 import com.simbongsa.feed.entity.Feed;
+import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.global.common.constant.OauthProvider;
 import com.simbongsa.global.common.constant.Role;
@@ -45,6 +47,8 @@ public class Member extends BaseEntity {
 
     private Integer volunteerParticipationCnt;
 
+    private MemberStatus memberStatus;
+  
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Feed> feeds = new ArrayList<>();
 
@@ -56,6 +60,20 @@ public class Member extends BaseEntity {
         this.role = Role.GUEST;
     }
 
+    public Member(String socialId, OauthProvider oauthProvider, String email, String nickname, int age,
+                      String profileImg, Role role, String introduction, int volunteerParticipationCnt, MemberStatus memberStatus) {
+        this.socialId = socialId;
+        this.oauthProvider = oauthProvider;
+        this.email = email;
+        this.nickname = nickname;
+        this.age = age;
+        this.profileImg = profileImg;
+        this.role = role;
+        this.introduction = introduction;
+        this.volunteerParticipationCnt = volunteerParticipationCnt;
+        this.memberStatus = memberStatus;
+    }
+  
     public void addFeed(Feed feed) {
         if (feeds == null) feeds = new ArrayList<>();
         feeds.add(feed);
