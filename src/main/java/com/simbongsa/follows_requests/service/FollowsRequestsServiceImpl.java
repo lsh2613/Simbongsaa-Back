@@ -2,10 +2,10 @@ package com.simbongsa.follows_requests.service;
 
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
-import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
-import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
+import com.simbongsa.follows_requests.dto.res.FollowsRequestsPageRes;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
+import com.simbongsa.follows_requests.repository.FollowsRequestsRepositoryCustom;
 import com.simbongsa.global.EntityFacade;
 import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
 import com.simbongsa.global.common.constant.FollowsRequestsDecide;
@@ -14,10 +14,11 @@ import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,6 +29,7 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
 
     private final FollowsRepository followsRepository;
     private final FollowsRequestRepository followsRequestRepository;
+    private final FollowsRequestsRepositoryCustom followsRequestsRepositoryCustom;
     private final EntityFacade entityFacade;
 
     @Override
@@ -62,14 +64,13 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
     }
 
     @Override
-    public void decideRequests(Long loginId, FollowsRequestsDecideReq followsRequestsDecideReq) {
-        FollowsRequests followsRequests = entityFacade.getFollowsRequests(followsRequestsDecideReq.followsRequestsId());
+    public void decideRequests(Long loginId, Long followsRequestsId, FollowsRequestsDecide followRequestsDecide) {
+        FollowsRequests followsRequests = entityFacade.getFollowsRequests(followsRequestsId);
         Member followedMember = followsRequests.getFollowedMember();
 
         deleteFollowsRequests(loginId, followedMember.getId(), followsRequests);
 
-        FollowsRequestsDecide decideType = followsRequestsDecideReq.followRequestsDecide();
-        followsIfAccept(decideType, followedMember, followsRequests);
+        followsIfAccept(followRequestsDecide, followedMember, followsRequests);
     }
 
     private void followsIfAccept(FollowsRequestsDecide followRequestsDecide, Member followedMember, FollowsRequests followsRequests) {
@@ -91,19 +92,15 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
     }
 
     @Override
-    public List<FollowsRequestsRes> getReceivedFollowsRequestsList(Long memberId) {
-        List<FollowsRequests> requests = entityFacade.getFollowsRequestsListByFollowedMemberId(memberId);
-        return requests.stream()
-                .map(FollowsRequestsRes::mapFollowingMemberToRequestsRes)
-                .toList();
+    public FollowsRequestsPageRes getReceivedFollowsRequestsPage(Long memberId, Long lastFollowsRequestId, Pageable pageable) {
+        Slice<FollowsRequests> receivedFollowsRequestsPage = followsRequestsRepositoryCustom.getReceivedFollowsRequestsPage(memberId, lastFollowsRequestId, pageable);
+        return FollowsRequestsPageRes.mapReceivedRequestsToPageRes(receivedFollowsRequestsPage);
     }
 
     @Override
-    public List<FollowsRequestsRes> getSentFollowsRequestsList(Long memberId) {
-        List<FollowsRequests> requests = entityFacade.getFollowsRequestsListByFollowingMemberId(memberId);
-        return requests.stream()
-                .map(FollowsRequestsRes::mapFollowedMemberToRequestsRes)
-                .toList();
+    public FollowsRequestsPageRes getSentFollowsRequestsPage(Long memberId, Long lastFollowsRequestId, Pageable pageable) {
+        Slice<FollowsRequests> sentFollowsRequestsPage = followsRequestsRepositoryCustom.getSentFollowsRequestsPage(memberId, lastFollowsRequestId, pageable);
+        return FollowsRequestsPageRes.mapSentRequestsToPageRes(sentFollowsRequestsPage);
     }
 
     @Override
