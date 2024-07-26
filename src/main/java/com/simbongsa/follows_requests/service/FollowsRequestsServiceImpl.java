@@ -2,7 +2,6 @@ package com.simbongsa.follows_requests.service;
 
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
-import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
 import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
@@ -62,14 +61,13 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
     }
 
     @Override
-    public void decideRequests(Long loginId, FollowsRequestsDecideReq followsRequestsDecideReq) {
-        FollowsRequests followsRequests = entityFacade.getFollowsRequests(followsRequestsDecideReq.followsRequestsId());
+    public void decideRequests(Long loginId, Long followsRequestsId, FollowsRequestsDecide followRequestsDecide) {
+        FollowsRequests followsRequests = entityFacade.getFollowsRequests(followsRequestsId);
         Member followedMember = followsRequests.getFollowedMember();
 
         deleteFollowsRequests(loginId, followedMember.getId(), followsRequests);
 
-        FollowsRequestsDecide decideType = followsRequestsDecideReq.followRequestsDecide();
-        followsIfAccept(decideType, followedMember, followsRequests);
+        followsIfAccept(followRequestsDecide, followedMember, followsRequests);
     }
 
     private void followsIfAccept(FollowsRequestsDecide followRequestsDecide, Member followedMember, FollowsRequests followsRequests) {

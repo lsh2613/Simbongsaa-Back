@@ -2,7 +2,6 @@ package com.simbongsa.follows_requests.service;
 
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
-import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
 import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
@@ -130,10 +129,9 @@ class FollowsRequestsServiceImplTest {
         followsRequestsService.follow(followingMemberId, followedMemberId);
 
         Long followsRequestsId = followsRequestRepository.findAll().get(0).getId();
-        FollowsRequestsDecideReq followsRequestsDecideReq = new FollowsRequestsDecideReq(followsRequestsId, FollowsRequestsDecide.ACCEPT);
 
         //when
-        followsRequestsService.decideRequests(followedMemberId, followsRequestsDecideReq);
+        followsRequestsService.decideRequests(followedMemberId, followsRequestsId, FollowsRequestsDecide.ACCEPT);
 
         //then
         List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();
@@ -158,10 +156,9 @@ class FollowsRequestsServiceImplTest {
         followsRequestsService.follow(followingMemberId, followedMemberId);
 
         Long followsRequestsId = followsRequestRepository.findAll().get(0).getId();
-        FollowsRequestsDecideReq followsRequestsDecideReq = new FollowsRequestsDecideReq(followsRequestsId, FollowsRequestsDecide.REJECT);
 
         //when
-        followsRequestsService.decideRequests(followedMemberId, followsRequestsDecideReq);
+        followsRequestsService.decideRequests(followedMemberId, followsRequestsId, FollowsRequestsDecide.REJECT);
 
         //then
         List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();

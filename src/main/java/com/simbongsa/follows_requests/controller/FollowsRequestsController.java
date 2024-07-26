@@ -1,9 +1,9 @@
 package com.simbongsa.follows_requests.controller;
 
-import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
 import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
 import com.simbongsa.follows_requests.service.FollowsRequestsService;
 import com.simbongsa.global.common.apiPayload.CustomApiResponse;
+import com.simbongsa.global.common.constant.FollowsRequestsDecide;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,14 +35,15 @@ public class FollowsRequestsController {
 
     /**
      * 팔로우 요청에 대한 수락/거절
-     * @param loginId 요청에 대해 결정하는 사용자 id
-     * @param followsRequestsDecideReq 팔로우요청id 수락/거절
+     * @param followsRequestsId 결정(수락/거절)할 팔로우 요청 id
+     * @param followRequestsDecide 수락/거절
      * @return null
      */
-    @PostMapping("/decision")
+    @PostMapping("/{followsRequestsId}/decision")
     public CustomApiResponse decideRequests(@AuthenticationPrincipal Long loginId,
-                                            @RequestBody FollowsRequestsDecideReq followsRequestsDecideReq) {
-        followsRequestsService.decideRequests(loginId, followsRequestsDecideReq);
+                                            @PathVariable Long followsRequestsId,
+                                            @RequestParam FollowsRequestsDecide followRequestsDecide) {
+        followsRequestsService.decideRequests(loginId, followsRequestsId, followRequestsDecide);
         return CustomApiResponse.onSuccess();
     }
 
