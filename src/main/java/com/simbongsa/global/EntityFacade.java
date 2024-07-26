@@ -4,6 +4,8 @@ import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
+import com.simbongsa.feed.entity.Feed;
+import com.simbongsa.feed.repository.FeedRepository;
 import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
 import com.simbongsa.global.common.exception.GeneralHandler;
 import com.simbongsa.group.entity.Group;
@@ -16,12 +18,14 @@ import com.simbongsa.member.entity.Member;
 import com.simbongsa.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Transactional
 @RequiredArgsConstructor
+@Service
 public class EntityFacade {
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
@@ -29,6 +33,7 @@ public class EntityFacade {
     private final GroupUserRepository groupUserRepository;
     private final FollowsRepository followsRepository;
     private final FollowsRequestRepository followsRequestRepository;
+    private final FeedRepository feedRepository;
 
     public Member getMember(Long memberId) {
         Optional<Member> memberById = memberRepository.findById(memberId);
@@ -80,12 +85,11 @@ public class EntityFacade {
     public Optional<Follows> getFollowsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
         return followsRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
     }
-
-    public List<FollowsRequests> getFollowsRequestsListByFollowedMemberId(Long memberId) {
-        return followsRequestRepository.findAllByFollowedMemberId(memberId);
-    }
-
-    public List<FollowsRequests> getFollowsRequestsListByFollowingMemberId(Long memberId) {
-        return followsRequestRepository.findAllByFollowingMemberId(memberId);
+      
+    public Feed getFeed(Long feedId) {
+        Optional<Feed> feedById = feedRepository.findById(feedId);
+        if (feedById.isEmpty())
+            throw new GeneralHandler(ErrorStatus.FEED_NOT_FOUND);
+        return feedById.get();
     }
 }

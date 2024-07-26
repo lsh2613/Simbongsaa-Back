@@ -1,5 +1,7 @@
 package com.simbongsa.member.entity;
 
+
+import com.simbongsa.feed.entity.Feed;
 import com.simbongsa.global.common.constant.MemberStatus;
 import com.simbongsa.global.common.entity.BaseEntity;
 import com.simbongsa.global.common.constant.OauthProvider;
@@ -7,6 +9,9 @@ import com.simbongsa.global.common.constant.Role;
 import com.simbongsa.global.oauth2.member.OauthMember;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,6 +48,9 @@ public class Member extends BaseEntity {
     private Integer volunteerParticipationCnt;
 
     private MemberStatus memberStatus;
+  
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feed> feeds = new ArrayList<>();
 
     public Member(OauthMember request) {
         this.socialId = request.getSocialId();
@@ -53,7 +61,7 @@ public class Member extends BaseEntity {
     }
 
     public Member(String socialId, OauthProvider oauthProvider, String email, String nickname, int age,
-                  String profileImg, Role role, String introduction, int volunteerParticipationCnt, MemberStatus memberStatus) {
+                      String profileImg, Role role, String introduction, int volunteerParticipationCnt, MemberStatus memberStatus) {
         this.socialId = socialId;
         this.oauthProvider = oauthProvider;
         this.email = email;
@@ -64,5 +72,11 @@ public class Member extends BaseEntity {
         this.introduction = introduction;
         this.volunteerParticipationCnt = volunteerParticipationCnt;
         this.memberStatus = memberStatus;
+    }
+  
+    public void addFeed(Feed feed) {
+        if (feeds == null) feeds = new ArrayList<>();
+        feeds.add(feed);
+        feed.setMember(this);  // Feed 객체와의 양방향 연관관계 설정
     }
 }
