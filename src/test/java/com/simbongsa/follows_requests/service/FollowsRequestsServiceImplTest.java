@@ -2,8 +2,7 @@ package com.simbongsa.follows_requests.service;
 
 import com.simbongsa.follows.entity.Follows;
 import com.simbongsa.follows.repository.FollowsRepository;
-import com.simbongsa.follows_requests.dto.req.FollowsRequestsDecideReq;
-import com.simbongsa.follows_requests.dto.res.FollowsRequestsRes;
+import com.simbongsa.follows_requests.dto.res.FollowsRequestsPageRes;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
 import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
 import com.simbongsa.global.common.constant.FollowsRequestsDecide;
@@ -13,8 +12,11 @@ import com.simbongsa.global.common.constant.Role;
 import com.simbongsa.member.entity.Member;
 import com.simbongsa.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -130,10 +132,9 @@ class FollowsRequestsServiceImplTest {
         followsRequestsService.follow(followingMemberId, followedMemberId);
 
         Long followsRequestsId = followsRequestRepository.findAll().get(0).getId();
-        FollowsRequestsDecideReq followsRequestsDecideReq = new FollowsRequestsDecideReq(followsRequestsId, FollowsRequestsDecide.ACCEPT);
 
         //when
-        followsRequestsService.decideRequests(followedMemberId, followsRequestsDecideReq);
+        followsRequestsService.decideRequests(followedMemberId, followsRequestsId, FollowsRequestsDecide.ACCEPT);
 
         //then
         List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();
@@ -158,10 +159,9 @@ class FollowsRequestsServiceImplTest {
         followsRequestsService.follow(followingMemberId, followedMemberId);
 
         Long followsRequestsId = followsRequestRepository.findAll().get(0).getId();
-        FollowsRequestsDecideReq followsRequestsDecideReq = new FollowsRequestsDecideReq(followsRequestsId, FollowsRequestsDecide.REJECT);
 
         //when
-        followsRequestsService.decideRequests(followedMemberId, followsRequestsDecideReq);
+        followsRequestsService.decideRequests(followedMemberId, followsRequestsId, FollowsRequestsDecide.REJECT);
 
         //then
         List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();
@@ -175,57 +175,63 @@ class FollowsRequestsServiceImplTest {
     @Test
     void 내가_받은_팔로우_요청_조회() {
         //given
-        Long followedMemberId = saveMember("test", "socialId", MemberStatus.PRIVATE);
-        Long followingMemberId1 = saveMember("test1", "socialId1", MemberStatus.PUBLIC);
-        Long followingMemberId2 = saveMember("test2", "socialId2", MemberStatus.PUBLIC);
+        Long followingMemberId_01 = saveMember("following_01", "socialId1", MemberStatus.PUBLIC);
+        Long followingMemberId_02 = saveMember("following_02", "socialId2", MemberStatus.PUBLIC);
+        Long followedMemberId = saveMember("followed", "socialId3", MemberStatus.PRIVATE);
 
-        followsRequestsService.follow(followingMemberId1, followedMemberId);
-        followsRequestsService.follow(followingMemberId2, followedMemberId);
-
-        List<FollowsRequests> followsRequestsList = followsRequestRepository.findAllByFollowedMemberId(followedMemberId);
-        FollowsRequests followsRequests1 = followsRequestsList.get(0);
-        FollowsRequests followsRequests2 = followsRequestsList.get(1);
+        followsRequestsService.follow(followingMemberId_01, followedMemberId);
+        followsRequestsService.follow(followingMemberId_02, followedMemberId);
 
         //when
-        List<FollowsRequestsRes> followsRequestsResList = followsRequestsService.getReceivedFollowsRequestsList(followedMemberId);
+        FollowsRequestsPageRes followsRequestsPage_01 = followsRequestsService.getReceivedFollowsRequestsPage(
+                followedMemberId,
+                null,
+                PageRequest.of(0, 1)
+        );
+        FollowsRequestsPageRes followsRequestsPage_02 = followsRequestsService.getReceivedFollowsRequestsPage(
+                followedMemberId,
+                followsRequestsPage_01.lastFollowsRequestId(),
+                PageRequest.of(1, 1)
+        );
 
         //then
-        FollowsRequestsRes followsRequestsRes1 = followsRequestsResList.get(0);
-        FollowsRequestsRes followsRequestsRes2 = followsRequestsResList.get(1);
-
-        assertThat(followsRequestsResList.size()).isEqualTo(2);
-        assertThat(followsRequestsRes1.followsRequestId()).isEqualTo(followsRequests1.getId());
-        assertThat(followsRequestsRes2.followsRequestId()).isEqualTo(followsRequests2.getId());
-        assertThat(followsRequestsRes1.memberId()).isEqualTo(followingMemberId1);
-        assertThat(followsRequestsRes2.memberId()).isEqualTo(followingMemberId2);
+        assertThat(followsRequestsPage_01.followsRequestsResList().size()).isEqualTo(1);
+        assertThat(followsRequestsPage_01.followsRequestsResList().get(0).nickname()).isEqualTo("following_02");
+        assertThat(followsRequestsPage_01.hasNext()).isTrue();
+        assertThat(followsRequestsPage_02.followsRequestsResList().size()).isEqualTo(1);
+        assertThat(followsRequestsPage_02.followsRequestsResList().get(0).nickname()).isEqualTo("following_01");
+        assertThat(followsRequestsPage_02.hasNext()).isFalse();
     }
 
     @Test
     void 내가_신청한_팔로우_요청_조회() {
         //given
-        Long followingMemberId = saveMember("test", "socialId", MemberStatus.PUBLIC);
-        Long followedMemberId1 = saveMember("test1", "socialId1", MemberStatus.PRIVATE);
-        Long followedMemberId2 = saveMember("test2", "socialId2", MemberStatus.PRIVATE);
+        Long followingMemberId = saveMember("following", "socialId1", MemberStatus.PUBLIC);
+        Long followedMemberId_01 = saveMember("followed1", "socialId2", MemberStatus.PRIVATE);
+        Long followedMemberId_02 = saveMember("followed2", "socialId3", MemberStatus.PRIVATE);
 
-        followsRequestsService.follow(followingMemberId, followedMemberId1);
-        followsRequestsService.follow(followingMemberId, followedMemberId2);
-
-        List<FollowsRequests> followsRequestsList = followsRequestRepository.findAllByFollowingMemberId(followingMemberId);
-        FollowsRequests followsRequests1 = followsRequestsList.get(0);
-        FollowsRequests followsRequests2 = followsRequestsList.get(1);
+        followsRequestsService.follow(followingMemberId, followedMemberId_01);
+        followsRequestsService.follow(followingMemberId, followedMemberId_02);
 
         //when
-        List<FollowsRequestsRes> myFollowsRequestsList = followsRequestsService.getSentFollowsRequestsList(followingMemberId);
+        FollowsRequestsPageRes followsRequestsPage_01 = followsRequestsService.getSentFollowsRequestsPage(
+                followingMemberId,
+                null,
+                PageRequest.of(0, 1)
+        );
+        FollowsRequestsPageRes followsRequestsPage_02 = followsRequestsService.getSentFollowsRequestsPage(
+                followingMemberId,
+                followsRequestsPage_01.lastFollowsRequestId(),
+                PageRequest.of(1, 1)
+        );
 
         //then
-        FollowsRequestsRes followsRequestsRes1 = myFollowsRequestsList.get(0);
-        FollowsRequestsRes followsRequestsRes2 = myFollowsRequestsList.get(1);
-
-        assertThat(myFollowsRequestsList.size()).isEqualTo(2);
-        assertThat(followsRequestsRes1.followsRequestId()).isEqualTo(followsRequests1.getId());
-        assertThat(followsRequestsRes2.followsRequestId()).isEqualTo(followsRequests2.getId());
-        assertThat(followsRequestsRes1.memberId()).isEqualTo(followedMemberId1);
-        assertThat(followsRequestsRes2.memberId()).isEqualTo(followedMemberId2);
+        assertThat(followsRequestsPage_01.followsRequestsResList().size()).isEqualTo(1);
+        assertThat(followsRequestsPage_01.followsRequestsResList().get(0).nickname()).isEqualTo("followed2");
+        assertThat(followsRequestsPage_01.hasNext()).isTrue();
+        assertThat(followsRequestsPage_02.followsRequestsResList().size()).isEqualTo(1);
+        assertThat(followsRequestsPage_02.followsRequestsResList().get(0).nickname()).isEqualTo("followed1");
+        assertThat(followsRequestsPage_02.hasNext()).isFalse();
     }
 
     @Test
