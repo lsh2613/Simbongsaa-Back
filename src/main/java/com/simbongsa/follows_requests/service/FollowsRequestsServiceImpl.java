@@ -38,19 +38,25 @@ public class FollowsRequestsServiceImpl implements FollowsRequestsService{
         Member followedMember = entityFacade.getMember(followedMemberId);
 
         Optional<Follows> optionalFollows = entityFacade.getFollowsByFollowingMemberAndFollowedMember(followingMember, followedMember);
+        Optional<FollowsRequests> optionalFollowsRequests = entityFacade.getFollowsRequestsByFollowingMemberAndFollowedMember(followingMember, followedMember);
 
-        /**
-         * follows 존재?
-         *  - YES
-         *     - PUBLIC, PRIVATE -> follows 삭제 (=팔로우 취소)
-         *  - NO
-         *     - PUBLIC -> follows 저장 (=팔로우)
-         *     - PRIVATE -> follows_requests 저장 (=팔로우 요청)
+        /** todo
+         *  Follows.follows()
+         *  - PUBLIC -> follows 저장 (=팔로우)
+         *  - PRIVATE -> follows_requests 저장 (=팔로우 요청)
+         *  Follows.unFollows()
+         *  - 팔로우 삭제 (언팔)
+         *  FollowsRequests.delete()
+         *  - 팔로우 요청 삭제
          */
-        optionalFollows.ifPresentOrElse(
-                followsRepository::delete,
-                () -> followByFollowedMemberStatus(followingMember, followedMember, followedMember.getMemberStatus())
-        );
+        if (optionalFollows.isPresent()) {
+            throw new GeneralHandler(ErrorStatus.DUPLICATED_FOLLOWS);
+        }
+        if (optionalFollowsRequests.isPresent()) {
+            throw new GeneralHandler(ErrorStatus.DUPLICATED_FOLLOWS);
+        }
+
+        followByFollowedMemberStatus(followingMember, followedMember, followedMember.getMemberStatus());
     }
 
     private void followByFollowedMemberStatus(Member followingMember, Member followedMember, MemberStatus memberStatus) {

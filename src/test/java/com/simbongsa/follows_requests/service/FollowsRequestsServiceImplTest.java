@@ -107,24 +107,6 @@ class FollowsRequestsServiceImplTest {
     }
 
     @Test
-    void 팔로우_취소() {
-        //given
-        Long followingMemberId = saveMember("test1", MemberStatus.PUBLIC);
-        Long followedMemberId = saveMember("test2", MemberStatus.PUBLIC);
-        followsRequestsService.follow(followingMemberId, followedMemberId);
-
-        //when
-        followsRequestsService.follow(followingMemberId, followedMemberId);
-
-        //then
-        List<Follows> allFollows = followsRepository.findAll();
-        List<FollowsRequests> allFollowsRequests = followsRequestRepository.findAll();
-
-        assertThat(allFollows.size()).isEqualTo(0);
-        assertThat(allFollowsRequests.size()).isEqualTo(0);
-    }
-
-    @Test
     void 팔로우_요청_수락() {
         //given
         Long followingMemberId = saveMember("test1", MemberStatus.PUBLIC);

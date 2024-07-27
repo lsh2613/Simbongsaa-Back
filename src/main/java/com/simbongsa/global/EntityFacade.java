@@ -85,6 +85,9 @@ public class EntityFacade {
     public Optional<Follows> getFollowsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
         return followsRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
     }
+    public Optional<FollowsRequests> getFollowsRequestsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
+        return followsRequestRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
+    }
       
     public Feed getFeed(Long feedId) {
         Optional<Feed> feedById = feedRepository.findById(feedId);
