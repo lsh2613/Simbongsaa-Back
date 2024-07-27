@@ -1,5 +1,9 @@
 package com.simbongsa.global;
 
+import com.simbongsa.follows.entity.Follows;
+import com.simbongsa.follows.repository.FollowsRepository;
+import com.simbongsa.follows_requests.entity.FollowsRequests;
+import com.simbongsa.follows_requests.repository.FollowsRequestRepository;
 import com.simbongsa.feed.entity.Feed;
 import com.simbongsa.feed.repository.FeedRepository;
 import com.simbongsa.global.common.apiPayload.code.statusEnums.ErrorStatus;
@@ -27,7 +31,10 @@ public class EntityFacade {
     private final GroupRepository groupRepository;
     private final GroupJoinRepository groupJoinRepository;
     private final GroupUserRepository groupUserRepository;
+    private final FollowsRepository followsRepository;
+    private final FollowsRequestRepository followsRequestRepository;
     private final FeedRepository feedRepository;
+
     public Member getMember(Long memberId) {
         Optional<Member> memberById = memberRepository.findById(memberId);
         if (memberById.isEmpty())
@@ -59,7 +66,6 @@ public class EntityFacade {
     public Optional<GroupJoin> getGroupJoinByGroupIdAndMemberId(Long groupId, Long memberId) {
         return groupJoinRepository.findByGroup_IdAndMember_Id(groupId, memberId);
     }
-
     public List<GroupUser> getGroupUserByGroupId(Long groupId) {
         return groupUserRepository.findByGroup_Id(groupId);
     }
@@ -71,6 +77,18 @@ public class EntityFacade {
         return groupUserByGroupIdAndMemberId.get();
     }
 
+    public FollowsRequests getFollowsRequests(Long followsRequestsId) {
+        return followsRequestRepository.findById(followsRequestsId).orElseThrow(
+                () -> new GeneralHandler(ErrorStatus.FOLLOWS_REQUESTS_NOT_FOUND));
+    }
+
+    public Optional<Follows> getFollowsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
+        return followsRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
+    }
+    public Optional<FollowsRequests> getFollowsRequestsByFollowingMemberAndFollowedMember(Member followingMember, Member followedMember) {
+        return followsRequestRepository.findByFollowingMemberAndFollowedMember(followingMember, followedMember);
+    }
+      
     public Feed getFeed(Long feedId) {
         Optional<Feed> feedById = feedRepository.findById(feedId);
         if (feedById.isEmpty())
