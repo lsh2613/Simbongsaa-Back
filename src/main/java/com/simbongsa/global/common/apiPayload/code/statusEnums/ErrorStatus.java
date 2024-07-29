@@ -42,8 +42,12 @@ public enum ErrorStatus implements BaseCode {
     // 그룹 유저 관련
     GROUP_USER_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUPUSER404", "해당 그룹에서 유저를 찾을 수 없습니다."),
 
+    // 팔로우 관련
+    DUPLICATED_FOLLOWS(HttpStatus.BAD_REQUEST, "FOLLOWS400", "이미 존재하는 팔로우입니다."),
+
     // 팔로우 요청 관련
-    FOLLOWS_REQUESTS_NOT_FOUND(HttpStatus.BAD_REQUEST, "FOLLOWS_REQUESTS400", "존재하지 않는 팔로우 요청입니다"),
+    FOLLOWS_REQUESTS_NOT_FOUND(HttpStatus.BAD_REQUEST, "FOLLOWS_REQUESTS4001", "존재하지 않는 팔로우 요청입니다"),
+    DUPLICATED_FOLLOWS_REQUESTS(HttpStatus.BAD_REQUEST, "FOLLOWS_REQUESTS4002", "이미 존재하는 팔로우 요청입니다."),
 
     // 공지 관련
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "NOTICE4001", "존재하지 않는 공지 ID입니다."),
