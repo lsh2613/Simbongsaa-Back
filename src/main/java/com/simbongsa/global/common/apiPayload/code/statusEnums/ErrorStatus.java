@@ -44,6 +44,7 @@ public enum ErrorStatus implements BaseCode {
 
     // 팔로우 관련
     DUPLICATED_FOLLOWS(HttpStatus.BAD_REQUEST, "FOLLOWS400", "이미 존재하는 팔로우입니다."),
+    FOLLOWS_NOT_FOUND(HttpStatus.BAD_REQUEST, "FOLLOWS404", "팔로우를 찾을 수 없습니다"),
 
     // 팔로우 요청 관련
     FOLLOWS_REQUESTS_NOT_FOUND(HttpStatus.BAD_REQUEST, "FOLLOWS_REQUESTS4001", "존재하지 않는 팔로우 요청입니다"),
