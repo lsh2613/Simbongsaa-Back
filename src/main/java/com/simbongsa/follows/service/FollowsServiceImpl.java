@@ -31,7 +31,7 @@ public class FollowsServiceImpl implements FollowsService {
     public void deleteMyFollows(Long loginId, Long followsId) {
         Follows follows = entityFacade.getFollows(followsId);
 
-        if (!validateMyFollowsTarget(loginId, follows.getFollowingMember().getId())) {
+        if (!validateFollowsTarget(loginId, follows.getFollowingMember().getId())) {
             throw new GeneralHandler(ErrorStatus.USER_FORBIDDEN);
         }
 
@@ -42,7 +42,7 @@ public class FollowsServiceImpl implements FollowsService {
     public void deleteOppositeFollows(Long loginId, Long followsId) {
         Follows follows = entityFacade.getFollows(followsId);
 
-        if (!validateOppositeFollowsTarget(loginId, follows.getFollowedMember().getId())) {
+        if (!validateFollowsTarget(loginId, follows.getFollowedMember().getId())) {
             throw new GeneralHandler(ErrorStatus.USER_FORBIDDEN);
         }
 
@@ -95,11 +95,8 @@ public class FollowsServiceImpl implements FollowsService {
         }
     }
 
-    private boolean validateOppositeFollowsTarget(Long loginId, Long followedId) {
+    private boolean validateFollowsTarget(Long loginId, Long followedId) {
         return followedId.equals(loginId);
     }
 
-    private boolean validateMyFollowsTarget(Long loginId, Long followingId) {
-        return followingId.equals(loginId);
-    }
 }
