@@ -5,6 +5,7 @@ import com.simbongsa.follows.service.FollowsService;
 import com.simbongsa.global.common.apiPayload.CustomApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,7 @@ public class FollowsController {
     @GetMapping("/following")
     public CustomApiResponse getMyFollowing(@AuthenticationPrincipal Long loginId,
                                             @RequestParam Long lastFollowsId,
-                                            Pageable pageable) {
+                                            @PageableDefault Pageable pageable) {
         FollowsPageRes followingPageRes = followsService.getMyFollowingPage(loginId, lastFollowsId, pageable);
         return CustomApiResponse.onSuccess(followingPageRes);
     }
@@ -63,7 +64,7 @@ public class FollowsController {
     public CustomApiResponse getMemberFollowing(@AuthenticationPrincipal Long loginId,
                                               @PathVariable Long memberId,
                                               @RequestParam Long lastFollowsId,
-                                              Pageable pageable) {
+                                              @PageableDefault Pageable pageable) {
         FollowsPageRes followingPageRes = followsService.getMemberFollowingPage(loginId, memberId, lastFollowsId, pageable);
         return CustomApiResponse.onSuccess(followingPageRes);
     }
@@ -76,7 +77,7 @@ public class FollowsController {
     @GetMapping("/follower")
     public CustomApiResponse getMyFollower(@AuthenticationPrincipal Long loginId,
                                            @RequestParam Long lastFollowsId,
-                                           Pageable pageable) {
+                                           @PageableDefault Pageable pageable) {
         FollowsPageRes followerPageRes = followsService.getMyFollowerPage(loginId, lastFollowsId, pageable);
         return CustomApiResponse.onSuccess(followerPageRes);
     }
@@ -91,7 +92,7 @@ public class FollowsController {
     public CustomApiResponse getMemberFollower(@AuthenticationPrincipal Long loginId,
                                                @PathVariable Long memberId,
                                                @RequestParam Long lastFollowsId,
-                                               Pageable pageable) {
+                                               @PageableDefault Pageable pageable) {
         FollowsPageRes followerPageRes = followsService.getMemberFollowerPage(loginId, memberId,lastFollowsId, pageable);
         return CustomApiResponse.onSuccess(followerPageRes);
     }
