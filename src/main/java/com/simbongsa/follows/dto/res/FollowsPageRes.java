@@ -1,6 +1,7 @@
 package com.simbongsa.follows.dto.res;
 
 import com.simbongsa.follows.entity.Follows;
+import com.simbongsa.global.util.PageUtil;
 import lombok.Builder;
 import org.springframework.data.domain.Slice;
 
@@ -19,7 +20,7 @@ public record FollowsPageRes(
                                 .map(FollowsRes::mapFollowingToFollowsRes)
                                 .toList()
                 )
-                .lastFollowsRequestId(getLastId(myFollowingPage.getContent()))
+                .lastFollowsRequestId(PageUtil.getLastElement(myFollowingPage.getContent()).getId())
                 .hasNext(myFollowingPage.hasNext())
                 .build();
     }
@@ -31,12 +32,9 @@ public record FollowsPageRes(
                                 .map(FollowsRes::mapFollowerToFollowsRes)
                                 .toList()
                 )
-                .lastFollowsRequestId(getLastId(myFollowerPage.getContent()))
+                .lastFollowsRequestId(PageUtil.getLastElement(myFollowerPage.getContent()).getId())
                 .hasNext(myFollowerPage.hasNext())
                 .build();
     }
 
-    private static Long getLastId(List<Follows> followsList) {
-        return followsList.isEmpty() ? null : followsList.get(followsList.size() - 1).getId();
-    }
 }

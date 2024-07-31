@@ -3,6 +3,7 @@ package com.simbongsa.follows_requests.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simbongsa.follows_requests.entity.FollowsRequests;
+import com.simbongsa.global.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class FollowsRequestsRepositoryCustomImpl implements FollowsRequestsRepos
     @Override
     public Slice<FollowsRequests> getSentFollowsRequestsPage(Long memberId, Long lastFollowsRequestsId, Pageable pageable) {
         List<FollowsRequests> followsRequestsList = getSentFollowsRequestsList(memberId, lastFollowsRequestsId, pageable);
-        Boolean hasNext = hasNextPage(followsRequestsList, pageable);
+        Boolean hasNext = PageUtil.hasNextPage(followsRequestsList, pageable);
         return new SliceImpl<>(followsRequestsList, pageable, hasNext);
     }
 
@@ -42,7 +43,7 @@ public class FollowsRequestsRepositoryCustomImpl implements FollowsRequestsRepos
     @Override
     public Slice<FollowsRequests> getReceivedFollowsRequestsPage(Long memberId, Long lastFollowsRequestsId, Pageable pageable) {
         List<FollowsRequests> followsRequestsList = getReceivedFollowsRequestsList(memberId, lastFollowsRequestsId, pageable);
-        Boolean hasNext = hasNextPage(followsRequestsList, pageable);
+        Boolean hasNext = PageUtil.hasNextPage(followsRequestsList, pageable);
         return new SliceImpl<>(followsRequestsList, pageable, hasNext);
     }
 
@@ -69,15 +70,6 @@ public class FollowsRequestsRepositoryCustomImpl implements FollowsRequestsRepos
 
     private BooleanExpression eqFollowedMemberId(Long memberId) {
         return followsRequests.followedMember.id.eq(memberId);
-    }
-
-    private Boolean hasNextPage(List<FollowsRequests> followsRequestsList, Pageable pageable) {
-        // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
-        if (followsRequestsList.size() > pageable.getPageSize()) {
-            followsRequestsList.remove(pageable.getPageSize());
-            return true;
-        }
-        return false;
     }
 
 }

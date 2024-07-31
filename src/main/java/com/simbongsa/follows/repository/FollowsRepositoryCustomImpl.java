@@ -3,6 +3,7 @@ package com.simbongsa.follows.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simbongsa.follows.entity.Follows;
+import com.simbongsa.global.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -23,14 +24,14 @@ public class FollowsRepositoryCustomImpl implements FollowsRepositoryCustom {
     @Override
     public Slice<Follows> getFollowingPage(Long memberId, Long lastFollowsId, Pageable pageable) {
         List<Follows> followingList = getFollowingList(memberId, lastFollowsId, pageable);
-        boolean hasNext = hasNextPage(followingList, pageable);
+        boolean hasNext = PageUtil.hasNextPage(followingList, pageable);
         return new SliceImpl<>(followingList, pageable, hasNext);
     }
 
     @Override
     public Slice<Follows> getFollowerPage(Long memberId, Long lastFollowsId, Pageable pageable) {
         List<Follows> followingList = getFollowerList(memberId, lastFollowsId, pageable);
-        boolean hasNext = hasNextPage(followingList, pageable);
+        boolean hasNext = PageUtil.hasNextPage(followingList, pageable);
         return new SliceImpl<>(followingList, pageable, hasNext);
     }
 
@@ -71,12 +72,4 @@ public class FollowsRepositoryCustomImpl implements FollowsRepositoryCustom {
         return follows.id.lt(followsId);
     }
 
-    private Boolean hasNextPage(List<Follows> followsList, Pageable pageable) {
-        // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
-        if (followsList.size() > pageable.getPageSize()) {
-            followsList.remove(pageable.getPageSize());
-            return true;
-        }
-        return false;
-    }
 }
